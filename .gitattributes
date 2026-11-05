@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.ps1 text eol=crlf
+
+# Published v1 schemas have byte-level hashes; preserve their original CRLF bytes.
+src/game_test_agent/contracts/v1/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

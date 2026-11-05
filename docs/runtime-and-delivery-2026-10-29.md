@@ -32,7 +32,7 @@ uv build --no-build-isolation
 uv run --frozen --all-extras python scripts/package_smoke.py
 ```
 
-`.github/workflows/ci.yml` 配置 Windows/Linux 与 Python 3.10/3.12/3.13 矩阵，执行锁定安装、静态检查、离线回归、Schema 一致性、源码包/Wheel 构建、包内资源与导入检查，并保存结果文件。CI 默认不配置真实模型或 Provider；目前只完成本机等价检查，尚未在远端 GitHub Actions 执行这些矩阵。
+`.github/workflows/ci.yml` 配置 Windows/Linux 与 Python 3.11/3.12/3.13 矩阵，执行锁定安装、静态检查、离线回归、Schema 一致性、源码包/Wheel 构建、包内资源与导入检查，并保存结果文件。CI 默认不配置真实模型或 Provider。2026-11-05 首次远端执行发现最低 Python 版本和冻结契约换行差异，已将最低版本校正为 3.11，并用 `.gitattributes` 保留 v1 原始字节；后续验收以 GitHub Actions 当前提交结果为准。
 
 `scripts/export_schemas.py` 显式读取当前源码，避免误从旧安装包生成 Schema。`scripts/check_contracts.py` 检查当前 v2 Schema 是否过期，并用 `contracts/v1.sha256` 检查冻结的 v1 文件。v2 新增 Claim 的分项校验字段；严格绑定旧 v2 Schema 的下游需同步更新。
 

@@ -8,7 +8,7 @@
 
 ## 本地部署
 
-以下命令适用于 Windows PowerShell，建议使用 Python 3.12。默认使用 SQLite 和本地工作流，不需要 Docker。
+以下命令适用于 Windows PowerShell，要求 Python 3.11+，建议使用 3.12。默认使用 SQLite 和本地工作流，不需要 Docker。
 
 ```powershell
 git clone https://github.com/lcebound/game-test-investigation-agent.git
