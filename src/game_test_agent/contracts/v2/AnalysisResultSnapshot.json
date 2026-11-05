@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "AnalysisJobResult": {
+      "additionalProperties": false,
+      "properties": {
+        "dependency_lock_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dependency Lock Hash",
+          "type": "string"
+        },
+        "environment_image_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environment Image Digest"
+        },
+        "environment_runtime_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environment Runtime Digest"
+        },
+        "execution_status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "canceled"
+          ],
+          "title": "Execution Status",
+          "type": "string"
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exit Code"
+        },
+        "failure_kind": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Kind"
+        },
+        "finished_at": {
+          "format": "date-time",
+          "title": "Finished At",
+          "type": "string"
+        },
+        "isolation_kind": {
+          "enum": [
+            "microvm",
+            "gvisor",
+            "kata",
+            "wasm",
+            "container",
+            "windows_mxc",
+            "windows_psec"
+          ],
+          "title": "Isolation Kind",
+          "type": "string"
+        },
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "network_access": {
+          "default": "disabled",
+          "enum": [
+            "disabled",
+            "approved"
+          ],
+          "title": "Network Access",
+          "type": "string"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/AnalysisOutputItem"
+          },
+          "maxItems": 100,
+          "title": "Outputs",
+          "type": "array"
+        },
+        "resource_usage": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "title": "Resource Usage",
+          "type": "object"
+        },
+        "result_revision": {
+          "minimum": 1,
+          "title": "Result Revision",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "default": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "result_revision",
+        "execution_status",
+        "isolation_kind",
+        "dependency_lock_hash",
+        "started_at",
+        "finished_at"
+      ],
+      "title": "AnalysisJobResult",
+      "type": "object"
+    },
+    "AnalysisOutputItem": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "kind": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Kind",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "mime_type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "output_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Output Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "output_id",
+        "artifact_ref",
+        "kind",
+        "mime_type",
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "AnalysisOutputItem",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/AnalysisResultSnapshot",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "ingestion_error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ingestion Error"
+    },
+    "ingestion_state": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "ingested",
+        "failed"
+      ],
+      "title": "Ingestion State",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "result": {
+      "$ref": "#/$defs/AnalysisJobResult"
+    },
+    "result_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Result Hash",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "result",
+    "result_hash"
+  ],
+  "title": "AnalysisResultSnapshot",
+  "type": "object"
+}

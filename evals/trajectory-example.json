@@ -1,0 +1,82 @@
+[
+  {
+    "case_id": "illustrative-frame-spike",
+    "category": "performance",
+    "split": "train",
+    "split_group": "illustrative-only",
+    "first_observation_id": "single-spike",
+    "acceptable_discriminators": ["scene_load"],
+    "acceptable_metrics": ["frame_time_p95"],
+    "required_controls": ["build", "device"],
+    "competing_hypothesis_ids": ["content_bottleneck", "device_noise"],
+    "allowed_capability_ids": ["run-frame-probe"],
+    "traces": [
+      {
+        "case_id": "illustrative-frame-spike",
+        "variant": "without_memory",
+        "turns": [
+          {
+            "observation": {
+              "observation_id": "single-spike",
+              "state": "inconclusive",
+              "visible_evidence_ids": ["run-1"]
+            },
+            "decision": {
+              "kind": "report",
+              "objective_id": "frame-stability",
+              "expected_observation": "report current result",
+              "reason_summary": "A single spike is enough"
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "illustrative-frame-spike",
+        "variant": "with_memory",
+        "turns": [
+          {
+            "observation": {
+              "observation_id": "single-spike",
+              "state": "inconclusive",
+              "visible_evidence_ids": ["run-1"]
+            },
+            "decision": {
+              "kind": "experiment",
+              "objective_id": "frame-stability",
+              "capability_id": "run-frame-probe",
+              "provider_id": "example-adapter",
+              "expected_observation": "compare frame time in two scene-load arms",
+              "reason_summary": "One run cannot separate content load from device noise"
+            },
+            "design": {
+              "design_id": "controlled-retest",
+              "varied_dimensions": ["scene_load"],
+              "controlled_dimensions": ["build", "device", "graphics_settings"],
+              "measured_metrics": ["frame_time_p95"],
+              "predicted_observations": {
+                "content_bottleneck": "high-load arm regresses",
+                "device_noise": "both arms vary similarly"
+              },
+              "stop_condition": "two independent runs per arm"
+            }
+          },
+          {
+            "observation": {
+              "observation_id": "controlled-result",
+              "state": "conclusive",
+              "visible_evidence_ids": ["run-2", "run-3", "run-4", "run-5"],
+              "generated_by_design_id": "controlled-retest",
+              "uncertainty_reduced": true
+            },
+            "decision": {
+              "kind": "report",
+              "objective_id": "frame-stability",
+              "expected_observation": "bounded conclusion",
+              "reason_summary": "Controlled repeat distinguishes the hypotheses"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

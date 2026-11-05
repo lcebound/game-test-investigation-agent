@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "EvidenceLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "line_range",
+            "sample_window",
+            "time_range",
+            "video_timecode",
+            "region"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "title": "EvidenceLocator",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/EvidenceExcerpt",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_ref": {
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "byte_offset": {
+      "minimum": 0,
+      "title": "Byte Offset",
+      "type": "integer"
+    },
+    "evidence_id": {
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "excerpt_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Excerpt Sha256"
+    },
+    "locator": {
+      "$ref": "#/$defs/EvidenceLocator"
+    },
+    "mime_type": {
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "next_byte_offset": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Byte Offset"
+    },
+    "returned_bytes": {
+      "minimum": 0,
+      "title": "Returned Bytes",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_revision": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Source Revision",
+      "type": "integer"
+    },
+    "source_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Sha256"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "total_bytes": {
+      "minimum": 0,
+      "title": "Total Bytes",
+      "type": "integer"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "artifact_ref",
+    "mime_type",
+    "locator",
+    "text",
+    "byte_offset",
+    "returned_bytes",
+    "total_bytes",
+    "truncated"
+  ],
+  "title": "EvidenceExcerpt",
+  "type": "object"
+}

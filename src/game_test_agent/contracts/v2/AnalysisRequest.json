@@ -1,0 +1,41 @@
+{
+  "$id": "contract://v2/AnalysisRequest",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "input_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Input Evidence Ids",
+      "type": "array"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    },
+    "recipe_id": {
+      "enum": [
+        "csv_summary_v1",
+        "log_error_count_v1"
+      ],
+      "title": "Recipe Id",
+      "type": "string"
+    },
+    "recipe_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Recipe Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "recipe_id",
+    "input_evidence_ids"
+  ],
+  "title": "AnalysisRequest",
+  "type": "object"
+}

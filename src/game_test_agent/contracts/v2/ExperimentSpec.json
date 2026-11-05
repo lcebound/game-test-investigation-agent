@@ -1,0 +1,69 @@
+{
+  "$id": "contract://v2/ExperimentSpec",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capability_id": {
+      "title": "Capability Id",
+      "type": "string"
+    },
+    "capability_version": {
+      "title": "Capability Version",
+      "type": "string"
+    },
+    "experiment_id": {
+      "title": "Experiment Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "max_runs": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Max Runs",
+      "type": "integer"
+    },
+    "normalized_inputs_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Normalized Inputs Hash",
+      "type": "string"
+    },
+    "objective_id": {
+      "title": "Objective Id",
+      "type": "string"
+    },
+    "provider_id": {
+      "title": "Provider Id",
+      "type": "string"
+    },
+    "purpose": {
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stop_condition": {
+      "title": "Stop Condition",
+      "type": "string"
+    }
+  },
+  "required": [
+    "experiment_id",
+    "investigation_id",
+    "objective_id",
+    "capability_id",
+    "capability_version",
+    "provider_id",
+    "purpose",
+    "normalized_inputs_hash",
+    "stop_condition"
+  ],
+  "title": "ExperimentSpec",
+  "type": "object"
+}

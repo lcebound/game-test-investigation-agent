@@ -1,0 +1,463 @@
+{
+  "$defs": {
+    "AnalysisJobSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "created_by": {
+          "title": "Created By",
+          "type": "string"
+        },
+        "environment": {
+          "$ref": "#/$defs/SandboxEnvironment"
+        },
+        "expected_output_schema": {
+          "additionalProperties": true,
+          "title": "Expected Output Schema",
+          "type": "object"
+        },
+        "idempotency_key": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "input_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Input Evidence Ids",
+          "type": "array"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "job_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Job Id",
+          "type": "string"
+        },
+        "limits": {
+          "$ref": "#/$defs/SandboxResourceLimits"
+        },
+        "objective_id": {
+          "title": "Objective Id",
+          "type": "string"
+        },
+        "permission_approval_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Permission Approval Id"
+        },
+        "permissions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CodeExecutionPermissions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "program": {
+          "$ref": "#/$defs/AnalysisProgram"
+        },
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "purpose": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "default": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "tenant_id": {
+          "title": "Tenant Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "idempotency_key",
+        "tenant_id",
+        "project_id",
+        "investigation_id",
+        "objective_id",
+        "purpose",
+        "input_evidence_ids",
+        "program",
+        "environment",
+        "created_by"
+      ],
+      "title": "AnalysisJobSpec",
+      "type": "object"
+    },
+    "AnalysisJobState": {
+      "enum": [
+        "proposed",
+        "submitted",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "AnalysisJobState",
+      "type": "string"
+    },
+    "AnalysisProgram": {
+      "additionalProperties": false,
+      "properties": {
+        "code_artifact_ref": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Code Artifact Ref",
+          "type": "string"
+        },
+        "code_evidence_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code Evidence Id",
+          "type": "string"
+        },
+        "code_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Code Sha256",
+          "type": "string"
+        },
+        "entrypoint": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "language": {
+          "enum": [
+            "python",
+            "shell",
+            "powershell",
+            "wasm"
+          ],
+          "title": "Language",
+          "type": "string"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        }
+      },
+      "required": [
+        "language",
+        "code_evidence_id",
+        "code_artifact_ref",
+        "code_sha256",
+        "entrypoint"
+      ],
+      "title": "AnalysisProgram",
+      "type": "object"
+    },
+    "CodeDirectoryPermission": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "enum": [
+            "read",
+            "write"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "access"
+      ],
+      "title": "CodeDirectoryPermission",
+      "type": "object"
+    },
+    "CodeExecutionPermissions": {
+      "additionalProperties": false,
+      "description": "A proposal only. The model cannot approve or activate these permissions.",
+      "properties": {
+        "directories": {
+          "items": {
+            "$ref": "#/$defs/CodeDirectoryPermission"
+          },
+          "maxItems": 8,
+          "title": "Directories",
+          "type": "array"
+        },
+        "network": {
+          "default": false,
+          "title": "Network",
+          "type": "boolean"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "CodeExecutionPermissions",
+      "type": "object"
+    },
+    "SandboxEnvironment": {
+      "additionalProperties": false,
+      "properties": {
+        "credential_policy": {
+          "const": "none",
+          "default": "none",
+          "title": "Credential Policy",
+          "type": "string"
+        },
+        "dependency_lock_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dependency Lock Hash",
+          "type": "string"
+        },
+        "image_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Digest"
+        },
+        "isolation_kind": {
+          "enum": [
+            "microvm",
+            "gvisor",
+            "kata",
+            "wasm",
+            "container",
+            "windows_mxc",
+            "windows_psec"
+          ],
+          "title": "Isolation Kind",
+          "type": "string"
+        },
+        "network_access": {
+          "default": "disabled",
+          "enum": [
+            "disabled",
+            "approved"
+          ],
+          "title": "Network Access",
+          "type": "string"
+        },
+        "readonly_inputs": {
+          "const": true,
+          "default": true,
+          "title": "Readonly Inputs",
+          "type": "boolean"
+        },
+        "runner_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9._:-]+$",
+          "title": "Runner Id",
+          "type": "string"
+        },
+        "runtime_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runtime Digest"
+        }
+      },
+      "required": [
+        "runner_id",
+        "isolation_kind",
+        "dependency_lock_hash"
+      ],
+      "title": "SandboxEnvironment",
+      "type": "object"
+    },
+    "SandboxOperationRef": {
+      "additionalProperties": false,
+      "properties": {
+        "execution_status": {
+          "enum": [
+            "queued",
+            "running",
+            "succeeded",
+            "failed",
+            "canceled",
+            "unknown"
+          ],
+          "title": "Execution Status",
+          "type": "string"
+        },
+        "fencing_token": {
+          "maxLength": 512,
+          "minLength": 16,
+          "title": "Fencing Token",
+          "type": "string"
+        },
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "runner_id": {
+          "title": "Runner Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "runner_id",
+        "operation_id",
+        "fencing_token",
+        "execution_status"
+      ],
+      "title": "SandboxOperationRef",
+      "type": "object"
+    },
+    "SandboxResourceLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_seconds": {
+          "default": 30,
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Cpu Seconds",
+          "type": "integer"
+        },
+        "disk_mb": {
+          "default": 256,
+          "maximum": 10240,
+          "minimum": 1,
+          "title": "Disk Mb",
+          "type": "integer"
+        },
+        "memory_mb": {
+          "default": 512,
+          "maximum": 32768,
+          "minimum": 64,
+          "title": "Memory Mb",
+          "type": "integer"
+        },
+        "output_bytes": {
+          "default": 16777216,
+          "maximum": 1073741824,
+          "minimum": 1,
+          "title": "Output Bytes",
+          "type": "integer"
+        },
+        "process_count": {
+          "default": 8,
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Process Count",
+          "type": "integer"
+        },
+        "wall_seconds": {
+          "default": 60,
+          "maximum": 7200,
+          "minimum": 1,
+          "title": "Wall Seconds",
+          "type": "integer"
+        }
+      },
+      "title": "SandboxResourceLimits",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/AnalysisJobRecord",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "operation_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SandboxOperationRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "spec": {
+      "$ref": "#/$defs/AnalysisJobSpec"
+    },
+    "spec_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Spec Hash",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/AnalysisJobState"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "spec",
+    "spec_hash",
+    "state"
+  ],
+  "title": "AnalysisJobRecord",
+  "type": "object"
+}

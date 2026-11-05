@@ -1,0 +1,422 @@
+{
+  "$defs": {
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "assertions": {
+          "items": {
+            "$ref": "#/$defs/EvidenceAssertion"
+          },
+          "maxItems": 8,
+          "title": "Assertions",
+          "type": "array"
+        },
+        "assessment_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assessment Ids",
+          "type": "array"
+        },
+        "basis": {
+          "default": "unspecified",
+          "enum": [
+            "unspecified",
+            "fact",
+            "run_verdict",
+            "evidence_metadata",
+            "evidence_excerpt",
+            "analysis_result",
+            "hypothesis"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "claim_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "expected_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Value"
+        },
+        "fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fact Ids",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Id"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
+        },
+        "supporting_excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supporting Excerpt"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "verification_details": {
+          "$ref": "#/$defs/ClaimVerification"
+        },
+        "verification_status": {
+          "default": "unverified",
+          "enum": [
+            "unverified",
+            "verified"
+          ],
+          "title": "Verification Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "evidence_ids"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "ClaimVerification": {
+      "additionalProperties": false,
+      "properties": {
+        "causality": {
+          "default": "not_verified",
+          "enum": [
+            "not_verified",
+            "verified"
+          ],
+          "title": "Causality",
+          "type": "string"
+        },
+        "citation": {
+          "default": "not_checked",
+          "enum": [
+            "not_checked",
+            "verified",
+            "not_applicable"
+          ],
+          "title": "Citation",
+          "type": "string"
+        },
+        "provenance": {
+          "default": "unknown",
+          "enum": [
+            "unknown",
+            "provider_declared",
+            "verified"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "support": {
+          "default": "not_checked",
+          "enum": [
+            "not_checked",
+            "literal_only",
+            "deterministic"
+          ],
+          "title": "Support",
+          "type": "string"
+        }
+      },
+      "title": "ClaimVerification",
+      "type": "object"
+    },
+    "ConclusionLevel": {
+      "enum": [
+        "unknown",
+        "observation",
+        "reproduced",
+        "bottleneck_supported",
+        "root_cause_confirmed"
+      ],
+      "title": "ConclusionLevel",
+      "type": "string"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "completed_objectives": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Completed Objectives",
+          "type": "array"
+        },
+        "uncovered_objectives": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncovered Objectives",
+          "type": "array"
+        }
+      },
+      "title": "Coverage",
+      "type": "object"
+    },
+    "EvidenceAssertion": {
+      "additionalProperties": false,
+      "description": "A checkable statement about an exact JSON field, never a causal verdict.",
+      "properties": {
+        "evidence_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "expected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expected"
+        },
+        "operation": {
+          "default": "value",
+          "enum": [
+            "value",
+            "count",
+            "min",
+            "max",
+            "mean",
+            "p50",
+            "p95",
+            "p99"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "operator": {
+          "default": "eq",
+          "enum": [
+            "eq",
+            "ne",
+            "lt",
+            "le",
+            "gt",
+            "ge"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "pointer": {
+          "maxLength": 500,
+          "title": "Pointer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "pointer",
+        "expected"
+      ],
+      "title": "EvidenceAssertion",
+      "type": "object"
+    },
+    "Resolution": {
+      "enum": [
+        "diagnosed",
+        "inconclusive",
+        "not_reproduced",
+        "goal_met",
+        "goal_failed",
+        "canceled",
+        "system_error"
+      ],
+      "title": "Resolution",
+      "type": "string"
+    },
+    "Verification": {
+      "additionalProperties": false,
+      "properties": {
+        "fix_applied": {
+          "const": false,
+          "default": false,
+          "title": "Fix Applied",
+          "type": "boolean"
+        },
+        "fix_verified": {
+          "const": false,
+          "default": false,
+          "title": "Fix Verified",
+          "type": "boolean"
+        },
+        "reproduced": {
+          "default": false,
+          "title": "Reproduced",
+          "type": "boolean"
+        }
+      },
+      "title": "Verification",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/InvestigationReport",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "conclusion_level": {
+      "$ref": "#/$defs/ConclusionLevel"
+    },
+    "coverage": {
+      "$ref": "#/$defs/Coverage"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "hypothesis_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Hypothesis Ids",
+      "type": "array"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recommended Actions",
+      "type": "array"
+    },
+    "resolution": {
+      "$ref": "#/$defs/Resolution"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "default": "2.0",
+      "enum": [
+        "1.0",
+        "2.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "canceled",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "stop_reason": {
+      "title": "Stop Reason",
+      "type": "string"
+    },
+    "summary": {
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "unresolved_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Questions",
+      "type": "array"
+    },
+    "verification": {
+      "$ref": "#/$defs/Verification"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "revision",
+    "status",
+    "resolution",
+    "summary",
+    "conclusion_level",
+    "coverage",
+    "stop_reason"
+  ],
+  "title": "InvestigationReport",
+  "type": "object"
+}

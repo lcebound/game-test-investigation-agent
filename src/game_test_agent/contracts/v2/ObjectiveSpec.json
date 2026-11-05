@@ -1,0 +1,125 @@
+{
+  "$id": "contract://v2/ObjectiveSpec",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allowed_execution_sources": {
+      "items": {
+        "enum": [
+          "real",
+          "simulated"
+        ],
+        "type": "string"
+      },
+      "title": "Allowed Execution Sources",
+      "type": "array"
+    },
+    "comparison": {
+      "enum": [
+        "lt",
+        "le",
+        "eq",
+        "ge",
+        "gt"
+      ],
+      "title": "Comparison",
+      "type": "string"
+    },
+    "criterion_id": {
+      "title": "Criterion Id",
+      "type": "string"
+    },
+    "fact_filters": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Fact Filters",
+      "type": "object"
+    },
+    "max_spread": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Spread"
+    },
+    "metric": {
+      "title": "Metric",
+      "type": "string"
+    },
+    "min_independent_runs": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Min Independent Runs",
+      "type": "integer"
+    },
+    "objective_id": {
+      "title": "Objective Id",
+      "type": "string"
+    },
+    "rule_version": {
+      "default": "metric-threshold-v1",
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "statistic": {
+      "enum": [
+        "minimum",
+        "maximum",
+        "mean",
+        "p50",
+        "p95",
+        "p99"
+      ],
+      "title": "Statistic",
+      "type": "string"
+    },
+    "threshold": {
+      "title": "Threshold",
+      "type": "number"
+    },
+    "unit": {
+      "title": "Unit",
+      "type": "string"
+    }
+  },
+  "required": [
+    "criterion_id",
+    "objective_id",
+    "metric",
+    "statistic",
+    "comparison",
+    "threshold",
+    "unit"
+  ],
+  "title": "ObjectiveSpec",
+  "type": "object"
+}

@@ -1,0 +1,59 @@
+{
+  "$defs": {
+    "CodeDirectoryPermission": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "enum": [
+            "read",
+            "write"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "access"
+      ],
+      "title": "CodeDirectoryPermission",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CodeExecutionPermissions",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A proposal only. The model cannot approve or activate these permissions.",
+  "properties": {
+    "directories": {
+      "items": {
+        "$ref": "#/$defs/CodeDirectoryPermission"
+      },
+      "maxItems": 8,
+      "title": "Directories",
+      "type": "array"
+    },
+    "network": {
+      "default": false,
+      "title": "Network",
+      "type": "boolean"
+    },
+    "reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reason"
+  ],
+  "title": "CodeExecutionPermissions",
+  "type": "object"
+}

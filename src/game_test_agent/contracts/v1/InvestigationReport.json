@@ -1,0 +1,202 @@
+{
+  "$defs": {
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "evidence_ids"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "ConclusionLevel": {
+      "enum": [
+        "unknown",
+        "observation",
+        "reproduced",
+        "bottleneck_supported",
+        "root_cause_confirmed"
+      ],
+      "title": "ConclusionLevel",
+      "type": "string"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "completed_objectives": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Completed Objectives",
+          "type": "array"
+        },
+        "uncovered_objectives": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncovered Objectives",
+          "type": "array"
+        }
+      },
+      "title": "Coverage",
+      "type": "object"
+    },
+    "Resolution": {
+      "enum": [
+        "diagnosed",
+        "inconclusive",
+        "not_reproduced",
+        "goal_met",
+        "canceled",
+        "system_error"
+      ],
+      "title": "Resolution",
+      "type": "string"
+    },
+    "Verification": {
+      "additionalProperties": false,
+      "properties": {
+        "fix_applied": {
+          "const": false,
+          "default": false,
+          "title": "Fix Applied",
+          "type": "boolean"
+        },
+        "fix_verified": {
+          "const": false,
+          "default": false,
+          "title": "Fix Verified",
+          "type": "boolean"
+        },
+        "reproduced": {
+          "default": false,
+          "title": "Reproduced",
+          "type": "boolean"
+        }
+      },
+      "title": "Verification",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v1/InvestigationReport",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "conclusion_level": {
+      "$ref": "#/$defs/ConclusionLevel"
+    },
+    "coverage": {
+      "$ref": "#/$defs/Coverage"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "hypothesis_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Hypothesis Ids",
+      "type": "array"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recommended Actions",
+      "type": "array"
+    },
+    "resolution": {
+      "$ref": "#/$defs/Resolution"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "canceled",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "stop_reason": {
+      "title": "Stop Reason",
+      "type": "string"
+    },
+    "summary": {
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "unresolved_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Questions",
+      "type": "array"
+    },
+    "verification": {
+      "$ref": "#/$defs/Verification"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "revision",
+    "status",
+    "resolution",
+    "summary",
+    "conclusion_level",
+    "coverage",
+    "stop_reason"
+  ],
+  "title": "InvestigationReport",
+  "type": "object"
+}

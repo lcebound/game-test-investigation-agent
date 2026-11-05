@@ -1,0 +1,890 @@
+{
+  "$defs": {
+    "ActionState": {
+      "enum": [
+        "proposed",
+        "reserved",
+        "dispatching",
+        "accepted",
+        "waiting",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "ActionState",
+      "type": "string"
+    },
+    "AnalysisJobState": {
+      "enum": [
+        "proposed",
+        "submitted",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "AnalysisJobState",
+      "type": "string"
+    },
+    "CandidateOutcomeRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "candidate_id": {
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "compared_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Compared Evidence Ids",
+          "type": "array"
+        },
+        "comparison_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comparison Key"
+        },
+        "evaluator_version": {
+          "title": "Evaluator Version",
+          "type": "string"
+        },
+        "evidence_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Id"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "observation_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Ref"
+        },
+        "observed_values": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Observed Values",
+          "type": "object"
+        },
+        "outcomes": {
+          "items": {
+            "$ref": "#/$defs/HypothesisOutcome"
+          },
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "plan_revision": {
+          "minimum": 1,
+          "title": "Plan Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "investigation_id",
+        "plan_revision",
+        "candidate_id",
+        "outcomes",
+        "evaluator_version"
+      ],
+      "title": "CandidateOutcomeRecord",
+      "type": "object"
+    },
+    "CriterionAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "comparability_checks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Comparability Checks",
+          "type": "array"
+        },
+        "contradicting_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting Fact Ids",
+          "type": "array"
+        },
+        "criterion_id": {
+          "title": "Criterion Id",
+          "type": "string"
+        },
+        "evaluated_state_revision": {
+          "minimum": 1,
+          "title": "Evaluated State Revision",
+          "type": "integer"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "missing_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Requirements",
+          "type": "array"
+        },
+        "observed_values": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Observed Values",
+          "type": "array"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "default": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "real_target",
+            "simulation",
+            "historical_reference"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "supporting_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Fact Ids",
+          "type": "array"
+        },
+        "verdict": {
+          "enum": [
+            "passed",
+            "failed",
+            "insufficient",
+            "not_applicable"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        }
+      },
+      "required": [
+        "criterion_id",
+        "rule_version",
+        "investigation_id",
+        "evaluated_state_revision",
+        "verdict",
+        "scope"
+      ],
+      "title": "CriterionAssessment",
+      "type": "object"
+    },
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "contradicting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting Evidence Ids",
+          "type": "array"
+        },
+        "falsifiable_prediction": {
+          "title": "Falsifiable Prediction",
+          "type": "string"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "missing_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Evidence",
+          "type": "array"
+        },
+        "next_experiment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Experiment"
+        },
+        "observable_predictions": {
+          "items": {
+            "$ref": "#/$defs/ObservablePrediction"
+          },
+          "title": "Observable Predictions",
+          "type": "array"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/HypothesisStatus",
+          "default": "proposed"
+        },
+        "supporting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "investigation_id",
+        "revision",
+        "statement",
+        "scope",
+        "falsifiable_prediction"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "HypothesisOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "observation_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observation Keys",
+          "type": "array"
+        },
+        "result": {
+          "enum": [
+            "supports",
+            "weakens",
+            "unknown"
+          ],
+          "title": "Result",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "result"
+      ],
+      "title": "HypothesisOutcome",
+      "type": "object"
+    },
+    "HypothesisStatus": {
+      "enum": [
+        "proposed",
+        "supported",
+        "refuted",
+        "confirmed",
+        "unresolved"
+      ],
+      "title": "HypothesisStatus",
+      "type": "string"
+    },
+    "ObservablePrediction": {
+      "additionalProperties": false,
+      "description": "A checkable expected observation, not a self-reported probability.",
+      "properties": {
+        "absolute_tolerance": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Absolute Tolerance",
+          "type": "number"
+        },
+        "capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Id"
+        },
+        "comparator": {
+          "enum": [
+            "eq",
+            "gt",
+            "lt",
+            "contains"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "minimum_samples": {
+          "default": 3,
+          "minimum": 3,
+          "title": "Minimum Samples",
+          "type": "integer"
+        },
+        "observation_key": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Observation Key",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "observation_key",
+        "comparator",
+        "value"
+      ],
+      "title": "ObservablePrediction",
+      "type": "object"
+    },
+    "RunRef": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_id",
+        "project_id",
+        "run_id"
+      ],
+      "title": "RunRef",
+      "type": "object"
+    },
+    "TestObjective": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Acceptance Criteria",
+          "type": "array"
+        },
+        "description": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "objective_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Objective Id",
+          "type": "string"
+        },
+        "priority": {
+          "default": "normal",
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "critical"
+          ],
+          "title": "Priority",
+          "type": "string"
+        }
+      },
+      "required": [
+        "objective_id",
+        "description"
+      ],
+      "title": "TestObjective",
+      "type": "object"
+    },
+    "WorkingActionSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "title": "Action Id",
+          "type": "string"
+        },
+        "capability_id": {
+          "title": "Capability Id",
+          "type": "string"
+        },
+        "execution_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "real",
+                "simulated"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution Source"
+        },
+        "execution_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "queued",
+                "running",
+                "succeeded",
+                "failed",
+                "canceled",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution Status"
+        },
+        "expected_observation": {
+          "title": "Expected Observation",
+          "type": "string"
+        },
+        "missing_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        },
+        "operation_kind": {
+          "const": "experiment",
+          "default": "experiment",
+          "title": "Operation Kind",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "result_ingestion_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "pending",
+                "ingested",
+                "failed"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Ingestion State"
+        },
+        "result_revision": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Revision"
+        },
+        "run_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RunRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "state": {
+          "$ref": "#/$defs/ActionState"
+        },
+        "test_verdict": {
+          "anyOf": [
+            {
+              "enum": [
+                "passed",
+                "failed",
+                "not_run",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Verdict"
+        }
+      },
+      "required": [
+        "action_id",
+        "state",
+        "capability_id",
+        "provider_id",
+        "expected_observation"
+      ],
+      "title": "WorkingActionSummary",
+      "type": "object"
+    },
+    "WorkingAnalysisSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exit Code"
+        },
+        "failure_kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Kind"
+        },
+        "input_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Input Evidence Ids",
+          "type": "array"
+        },
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operation Id"
+        },
+        "output_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Evidence Ids",
+          "type": "array"
+        },
+        "purpose": {
+          "title": "Purpose",
+          "type": "string"
+        },
+        "result_ingestion_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "pending",
+                "ingested",
+                "failed"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Ingestion State"
+        },
+        "runner_id": {
+          "title": "Runner Id",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/AnalysisJobState"
+        }
+      },
+      "required": [
+        "job_id",
+        "state",
+        "purpose",
+        "input_evidence_ids",
+        "runner_id"
+      ],
+      "title": "WorkingAnalysisSummary",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/InvestigationWorkingState",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Authoritative compact state rebuilt from ledgers, never from model prose.",
+  "properties": {
+    "active_hypotheses": {
+      "items": {
+        "$ref": "#/$defs/Hypothesis"
+      },
+      "title": "Active Hypotheses",
+      "type": "array"
+    },
+    "analysis_jobs": {
+      "items": {
+        "$ref": "#/$defs/WorkingAnalysisSummary"
+      },
+      "title": "Analysis Jobs",
+      "type": "array"
+    },
+    "assessment": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CriterionAssessment"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "budget_remaining": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "title": "Budget Remaining",
+      "type": "object"
+    },
+    "completed_actions": {
+      "items": {
+        "$ref": "#/$defs/WorkingActionSummary"
+      },
+      "title": "Completed Actions",
+      "type": "array"
+    },
+    "failed_actions": {
+      "items": {
+        "$ref": "#/$defs/WorkingActionSummary"
+      },
+      "title": "Failed Actions",
+      "type": "array"
+    },
+    "in_flight_actions": {
+      "items": {
+        "$ref": "#/$defs/WorkingActionSummary"
+      },
+      "title": "In Flight Actions",
+      "type": "array"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "next_candidates": {
+      "items": {
+        "enum": [
+          "query_run",
+          "retrieve_evidence",
+          "experiment",
+          "analyze",
+          "execute_code",
+          "request_input",
+          "report"
+        ],
+        "type": "string"
+      },
+      "title": "Next Candidates",
+      "type": "array"
+    },
+    "objective": {
+      "$ref": "#/$defs/TestObjective"
+    },
+    "pending_evidence_action_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pending Evidence Action Ids",
+      "type": "array"
+    },
+    "recent_candidate_outcomes": {
+      "items": {
+        "$ref": "#/$defs/CandidateOutcomeRecord"
+      },
+      "maxItems": 3,
+      "title": "Recent Candidate Outcomes",
+      "type": "array"
+    },
+    "refuted_hypotheses": {
+      "items": {
+        "$ref": "#/$defs/Hypothesis"
+      },
+      "title": "Refuted Hypotheses",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_revision": {
+      "minimum": 1,
+      "title": "State Revision",
+      "type": "integer"
+    },
+    "unresolved_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Questions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "state_revision",
+    "objective"
+  ],
+  "title": "InvestigationWorkingState",
+  "type": "object"
+}

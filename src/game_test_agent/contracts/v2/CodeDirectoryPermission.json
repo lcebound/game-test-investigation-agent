@@ -1,0 +1,27 @@
+{
+  "$id": "contract://v2/CodeDirectoryPermission",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "access": {
+      "enum": [
+        "read",
+        "write"
+      ],
+      "title": "Access",
+      "type": "string"
+    },
+    "path": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    }
+  },
+  "required": [
+    "path",
+    "access"
+  ],
+  "title": "CodeDirectoryPermission",
+  "type": "object"
+}

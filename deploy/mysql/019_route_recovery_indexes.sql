@@ -1,0 +1,2 @@
+CREATE INDEX ix_route_evaluation_deadline ON conversation_route_evaluations(state,lease_deadline);
+CREATE INDEX ix_route_evaluation_retry ON conversation_route_evaluations(state,updated_at);

@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>TRACE · 调查指挥台</title>
+    <link rel="stylesheet" href="/assets/workbench.css" />
+    <link rel="stylesheet" href="/assets/workbench-polish.css" />
+    <link rel="stylesheet" href="/assets/workbench-supervisor.css" />
+    <script src="/assets/workbench-ui.js" defer></script>
+    <script src="/assets/workbench-recall.js" defer></script>
+    <script src="/assets/workbench-overview.js" defer></script>
+    <script src="/assets/workbench-harness.js" defer></script>
+    <script src="/assets/workbench-routing.js" defer></script>
+    <script src="/assets/workbench-returns.js" defer></script>
+    <script src="/assets/workbench.js" defer></script>
+    <script src="/assets/workbench-supervisor.js" defer></script>
+  </head>
+  <body>
+    <svg
+      class="icon-library"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <symbol id="i-plus" viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="m5 12 7-7 7 7M12 5v14" />
+        </symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24">
+          <path
+            d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3H13a8 8 0 0 1 8 8.5Z"
+          />
+          <path d="M7 9h9M7 13h6" />
+        </symbol>
+        <symbol id="i-sliders" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 17h16" />
+          <circle cx="9" cy="7" r="3" />
+          <circle cx="15" cy="17" r="3" />
+        </symbol>
+        <symbol id="i-link" viewBox="0 0 24 24">
+          <path
+            d="m10 13 4-4m-6 6-2 2a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 2 2-2a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0"
+            transform="translate(1 1)"
+          />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="m5 12 4 4L19 6" />
+        </symbol>
+        <symbol id="i-file" viewBox="0 0 24 24">
+          <path d="M14 2H5v20h14V7l-5-5ZM14 2v6h5M8 12h8M8 16h5" />
+        </symbol>
+        <symbol id="i-play" viewBox="0 0 24 24">
+          <path d="m8 5 11 7-11 7Z" />
+        </symbol>
+        <symbol id="i-stop" viewBox="0 0 24 24">
+          <rect x="6" y="6" width="12" height="12" rx="2" />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <circle cx="10" cy="10" r="6" />
+          <path d="m15 15 5 5" />
+        </symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24">
+          <path d="m9 5 7 7-7 7" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" />
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </symbol>
+      </defs>
+    </svg>
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/" aria-label="TRACE 测试工作台"
+          ><span class="brand-mark">t<span>·</span></span
+          ><span>TRACE<small>INVESTIGATION AGENT</small></span
+          ><span class="version">BETA</span></a
+        >
+        <button class="new-chat" id="new-chat">
+          <svg><use href="#i-plus" /></svg>新建主会话<span>Ctrl K</span>
+        </button>
+        <nav id="supervisor-nav" class="supervisor-nav" aria-label="调查指挥台">
+          <button data-view="overview" aria-label="概览" class="active"><span>◫</span>概览<small id="attention-badge" hidden></small></button>
+          <button data-view="conversation" aria-label="主会话"><span>↗</span>主会话</button>
+          <button data-view="tasks" aria-label="后台调查"><span>▤</span>后台调查<small id="tasks-badge" hidden></small></button>
+          <button data-view="events" aria-label="事件与判断"><span>⌁</span>事件与判断</button>
+          <button data-view="sources" aria-label="信息来源"><span>⊙</span>信息来源</button>
+        </nav>
+        <label class="history-search"
+          ><svg><use href="#i-search" /></svg
+          ><input
+            id="history-search"
+            placeholder="搜索对话"
+            aria-label="搜索对话"
+        /></label>
+        <div class="section-label">
+          <span>工作空间 <span id="history-count">0</span></span>
+          <button
+            id="history-archived"
+            aria-pressed="false"
+            title="查看已归档的会话"
+          >
+            已归档
+          </button>
+        </div>
+        <nav id="history" class="history" aria-label="会话历史"></nav>
+        <button class="load-more" id="load-more" hidden>加载更早的对话</button>
+        <div class="sidebar-bottom">
+          <button class="sidebar-action" id="connections">
+            <svg><use href="#i-link" /></svg>平台连接<span
+              class="small-dot"
+              id="sidebar-dot"
+            ></span>
+          </button>
+          <button class="sidebar-action" id="settings">
+            <svg><use href="#i-sliders" /></svg>工作台设置
+          </button>
+          <div class="profile">
+            <span class="avatar">QA</span>
+            <div>
+              <strong id="principal-label">本地工作空间</strong
+              ><small id="project-label">选择项目后开始</small>
+            </div>
+            <span class="profile-dot"></span>
+          </div>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <button
+            class="icon-button mobile-menu"
+            id="menu"
+            aria-label="打开侧栏"
+          >
+            <svg><use href="#i-menu" /></svg>
+          </button>
+          <div class="breadcrumb">
+            工作空间<svg><use href="#i-chevron" /></svg
+            ><strong id="chat-title">新的调查</strong>
+          </div>
+          <div class="topbar-right">
+            <div class="conversation-actions" id="conversation-actions" hidden>
+              <button
+                id="rename-chat"
+                class="icon-button"
+                title="编辑会话"
+                aria-label="编辑会话"
+              >
+                ✎
+              </button>
+              <button
+                id="pin-chat"
+                class="icon-button"
+                title="置顶会话"
+                aria-label="置顶会话"
+                aria-pressed="false"
+              >
+                ☆
+              </button>
+              <button
+                id="archive-chat"
+                class="icon-button"
+                title="归档会话"
+                aria-label="归档会话"
+              >
+                <svg><use href="#i-file" /></svg>
+              </button>
+            </div>
+            <button
+              class="icon-button"
+              id="theme-toggle"
+              aria-label="切换深色主题"
+              title="切换主题"
+            >
+              ◐
+            </button>
+            <button
+              class="icon-button context-toggle"
+              id="context-toggle"
+              aria-label="打开调查详情"
+              aria-expanded="false"
+            >
+              <svg><use href="#i-grid" /></svg>
+            </button>
+            <span class="model-chip" id="model-chip">规则模式</span
+            ><button class="connection-pill" id="connection-pill">
+              <span class="small-dot"></span
+              ><span id="connection-label">检查连接</span>
+            </button>
+          </div>
+        </header>
+        <div class="workspace">
+          <section class="conversation" aria-label="调查对话">
+            <section id="supervisor-board" class="supervisor-board" aria-label="监督面板">
+              <header class="board-heading"><div><p class="board-kicker">SUPERVISION</p><h1 id="board-title">值得关注的进展</h1><p id="board-subtitle">交代目标，后台调查；需要你时再介入。</p></div><button id="board-refresh" class="outline-button">刷新</button></header>
+              <div id="board-content" aria-live="polite"></div>
+            </section>
+            <div class="conversation-scroll" id="conversation-scroll" aria-label="主会话消息">
+              <div class="welcome" id="welcome">
+                <div class="eyebrow">ONE CONVERSATION · MANY INVESTIGATIONS</div>
+                <h1>目标交给 Agent，<br />让调查持续推进。</h1>
+                <p>在这里统一提出问题、补充线索和查看结果。<br />多个调查在后台独立进行，重要进展会回到这里。</p>
+                <div class="suggestions">
+                  <button
+                    data-prompt="验证一个已有用例是否通过，并注明运行环境与证据缺口。"
+                    class="suggestion"
+                  >
+                    <span class="suggestion-icon green"
+                      ><svg><use href="#i-play" /></svg></span
+                    ><strong>验证已有用例</strong
+                    ><small>执行、检查结果与运行环境</small
+                    ><svg class="suggestion-arrow">
+                      <use href="#i-chevron" />
+                    </svg>
+                  </button>
+                  <button
+                    data-prompt="调查测试失败原因，先收集日志和运行证据，再提出可验证的假设。"
+                    class="suggestion"
+                  >
+                    <span class="suggestion-icon violet"
+                      ><svg><use href="#i-search" /></svg></span
+                    ><strong>定位测试问题</strong
+                    ><small>从日志走向可验证的假设</small
+                    ><svg class="suggestion-arrow">
+                      <use href="#i-chevron" />
+                    </svg>
+                  </button>
+                  <button
+                    data-prompt="对同一个用例设计重复性验证，说明对照条件、运行预算和停止条件。"
+                    class="suggestion"
+                  >
+                    <span class="suggestion-icon sand"
+                      ><svg><use href="#i-grid" /></svg></span
+                    ><strong>设计重复性验证</strong
+                    ><small>明确对照、预算与停止条件</small
+                    ><svg class="suggestion-arrow">
+                      <use href="#i-chevron" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="welcome-foot">
+                  <span class="line"></span>计划 · 执行 · 证据 · 结论<span
+                    class="line"
+                  ></span>
+                </div>
+              </div>
+              <div class="messages" id="messages" hidden></div>
+            </div>
+            <div class="composer-wrap">
+              <div id="sync-status" class="sync-status" role="status" hidden>
+                <span></span><button id="retry-sync">重试</button>
+              </div>
+              <div id="task-state" class="task-state" hidden></div>
+              <div class="composer-destination"><span id="destination-label">发送给主会话 · 自动协调</span><button id="reply-clear" class="text-link" hidden>返回主会话</button></div>
+              <div class="composer">
+                <div class="selected-test" id="selected-test" hidden></div>
+                <div class="selected-test" id="recall-selections" hidden></div>
+                <label class="sr-only" for="prompt">测试需求或补充信息</label
+                ><textarea
+                  id="prompt"
+                  rows="3"
+                  maxlength="4000"
+                  placeholder="告诉 Agent 要关注什么，或补充任一调查的线索…"
+                ></textarea>
+                <div class="composer-bottom">
+                  <button id="task-options" class="text-button">
+                    <svg><use href="#i-sliders" /></svg>测试条件<span
+                      id="budget-label"
+                      >最多 3 次运行</span
+                    >
+                  </button>
+                  <button id="recall-open" class="text-button">历史引用</button>
+                  <div class="send-controls">
+                    <span>Enter 发送</span
+                    ><button id="stop" class="stop-button" hidden>
+                      <svg><use href="#i-stop" /></svg>停止</button
+                    ><button
+                      id="send"
+                      class="send-button"
+                      aria-label="发送测试需求"
+                    >
+                      <svg><use href="#i-arrow" /></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="composer-note" id="composer-note">
+                结论来自调查记录。未取得证据时，会明确说明缺口。
+              </p>
+            </div>
+          </section>
+          <aside class="inspector" id="inspector" aria-label="测试上下文">
+            <div class="inspector-heading">
+              <div>
+                <span class="eyebrow">INVESTIGATION CONTEXT</span>
+                <h2>调查详情</h2>
+              </div>
+              <button
+                class="icon-button inspector-close"
+                id="context-close"
+                aria-label="关闭测试上下文"
+              >
+                ×
+              </button>
+            </div>
+            <div class="conversation-tasks" id="conversation-tasks" hidden>
+              <label>当前任务 <select id="task-selector" aria-label="选择会话中的任务"></select></label>
+              <button id="tasks-more" class="text-link" hidden>更多任务</button>
+              <button id="overview-open" class="outline-button">会话总览</button>
+              <button id="harness-open" class="outline-button">事件与综合</button>
+              <button id="input-returns-open" class="outline-button">退回消息</button>
+              <button id="new-task" class="outline-button" aria-pressed="false">新增独立任务</button>
+              <label class="routing-toggle" title="默认由主会话协调任务；取消勾选后直接回复当前任务。"><input type="checkbox" id="auto-route" checked />主会话协调</label>
+            </div>
+            <label class="run-switcher" id="run-switcher" hidden
+              >查看调查<select
+                id="run-selector"
+                aria-label="查看哪一次调查"
+              ></select
+            ></label>
+            <div class="inspector-tabs" role="tablist">
+              <button
+                role="tab"
+                data-tab="platform"
+                class="active"
+                aria-selected="true"
+              >
+                平台</button
+              ><button role="tab" data-tab="execution" aria-selected="false">
+                执行</button
+              ><button role="tab" data-tab="thread" aria-selected="false">交流与授权</button
+              ><button role="tab" data-tab="evidence" aria-selected="false">
+                证据<span id="evidence-count">0</span>
+              </button>
+            </div>
+            <button class="outline-button" id="reply-to-task">回复此调查</button>
+            <div id="panel-thread" class="inspector-panel" hidden><div id="task-detail-messages"></div></div>
+            <div id="panel-platform" class="inspector-panel">
+              <div class="platform-card">
+                <div class="platform-card-heading">
+                  <span class="platform-logo">↗</span>
+                  <div>
+                    <strong>测试平台</strong><small>通用 Provider 连接</small>
+                  </div>
+                  <span class="small-dot" id="platform-dot"></span>
+                </div>
+                <label class="sr-only" for="provider">测试平台</label
+                ><select id="provider">
+                  <option value="">尚未配置平台</option>
+                </select>
+                <div id="platform-status" class="platform-status">
+                  打开连接指南，配置测试平台连接。
+                </div>
+                <button class="outline-button" id="probe">
+                  <svg><use href="#i-link" /></svg>检查连接
+                </button>
+              </div>
+              <div class="panel-section-title">
+                可用测试 <span id="catalog-count">—</span>
+              </div>
+              <form class="catalog-search" id="catalog-form">
+                <svg><use href="#i-search" /></svg
+                ><input
+                  id="catalog-query"
+                  placeholder="查找用例、套件…"
+                  maxlength="512"
+                  aria-label="搜索测试目录"
+                /><button aria-label="搜索">
+                  <svg><use href="#i-chevron" /></svg>
+                </button>
+              </form>
+              <div id="catalog" class="catalog">
+                <div class="empty-panel">
+                  <svg><use href="#i-link" /></svg
+                  ><strong>连接你的测试平台</strong>
+                  <p>能力和用例来自平台实时接口。<br />连接后即可选择测试。</p>
+                  <button class="text-link" id="connection-guide">
+                    查看连接指南 ↗
+                  </button>
+                </div>
+              </div>
+              <button id="catalog-more" class="outline-button" hidden>
+                更多用例
+              </button>
+              <div class="context-tip">
+                <span>✳</span>
+                <p>
+                  <strong>先确认范围，再给出结论</strong
+                  >用例通过、构建验收与根因确认需要不同层级的证据。
+                </p>
+              </div>
+            </div>
+            <div id="panel-execution" class="inspector-panel" hidden></div>
+            <div id="panel-evidence" class="inspector-panel" hidden></div>
+            <div class="inspector-footer">
+              <span class="small-dot green-dot"></span>证据可追溯 · 预算可控制
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <button
+      class="drawer-backdrop"
+      id="drawer-backdrop"
+      hidden
+      aria-label="关闭侧栏"
+    ></button>
+    <dialog id="conversation-dialog">
+      <form id="conversation-form">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">CONVERSATION</span>
+            <h2>管理会话</h2>
+          </div>
+          <button type="button" data-close aria-label="关闭">×</button>
+        </div>
+        <label>会话名称<input name="title" required maxlength="200" /></label>
+        <label class="checkbox-label"
+          ><input name="pinned" type="checkbox" />置顶会话</label
+        >
+        <label class="checkbox-label"
+          ><input name="archived" type="checkbox" />归档会话</label
+        >
+        <p class="form-note">
+          归档仅隐藏会话。运行中的调查会继续执行，历史证据和报告会保留。
+        </p>
+        <div class="dialog-actions">
+          <button type="button" class="outline-button" data-close>取消</button
+          ><button class="primary-button">保存</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="settings-dialog">
+      <form id="settings-form">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">WORKSPACE SETTINGS</span>
+            <h2>工作台设置</h2>
+          </div>
+          <button type="button" data-close aria-label="关闭">×</button>
+        </div>
+        <p>选择调查所属的租户和项目。平台凭据在服务端配置。</p>
+        <p class="form-note" id="event-connection-status"></p>
+        <details class="model-connection-settings" open>
+          <summary>模型 API 连接</summary>
+          <p class="form-note" id="model-connection-status">
+            正在读取模型配置…
+          </p>
+          <label>模型<input id="configured-model" readonly /></label>
+          <label
+            >兼容 API 地址<input id="configured-compatible-url" readonly
+          /></label>
+          <label
+            >原生 API 地址<input id="configured-native-url" readonly
+          /></label>
+          <p class="form-note">
+            地址使用服务端固定配置。密钥仅保存在服务端本地文件；修改配置后重启服务生效。
+          </p>
+        </details>
+        <div class="form-grid">
+          <label>租户 ID<input name="tenant" required maxlength="128" /></label
+          ><label
+            >项目 ID<input name="project" required maxlength="128" /></label
+          ><label
+            >本地主体 ID<input
+              name="principal"
+              required
+              maxlength="256" /></label
+          ><label
+            >开发权限 Scopes<input
+              name="scopes"
+              placeholder="tests:read,runs:submit"
+          /></label>
+        </div>
+        <label
+          >工作台登录 Token（JWT 部署）<input
+            name="token"
+            type="password"
+            autocomplete="off"
+            placeholder="仅保留在当前页面内存中"
+        /></label>
+        <p class="form-note">
+          开发模式仅用于本机；JWT 模式下权限由服务端验证，不由上面的 Scopes
+          授予。登录 Token 刷新页面即清除。
+        </p>
+        <div class="dialog-actions">
+          <button type="button" class="outline-button" data-close>取消</button
+          ><button class="primary-button">保存并连接</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="options-dialog">
+      <form id="options-form">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">TEST CONDITIONS</span>
+            <h2>测试条件</h2>
+          </div>
+          <button type="button" data-close aria-label="关闭">×</button>
+        </div>
+        <p>这些条件会随下一条新调查提交。当前任务的预算以服务端记录为准。</p>
+        <div class="form-grid">
+          <label
+            >构建 ID（可选）<input
+              name="build"
+              maxlength="256"
+              placeholder="build-42" /></label
+          ><label
+            >目标类型<input
+              name="target"
+              list="target-kinds"
+              placeholder="windows_client" /><datalist
+              id="target-kinds"
+            ></datalist></label
+          ><label
+            >最多真实运行次数<input
+              name="runs"
+              type="number"
+              min="0"
+              max="50"
+              required /></label
+          ><label
+            >最多推理轮数<input
+              name="rounds"
+              type="number"
+              min="1"
+              max="20"
+              required /></label
+          ><label
+            >设备执行预算（分钟）<input
+              name="minutes"
+              type="number"
+              min="0"
+              max="10000"
+              step="0.1"
+              required /></label
+          ><label
+            >调查时间预算（分钟）<input
+              name="seconds"
+              type="number"
+              min="0.0166666667"
+              max="10080"
+              step="any"
+              required
+          /></label>
+        </div>
+        <label
+          >用例 ID（可选）<input
+            name="testId"
+            maxlength="256"
+            placeholder="选择平台用例，或手动输入"
+        /></label>
+        <label
+          >最多工具读取次数<input
+            name="reads"
+            type="number"
+            min="0"
+            max="1000"
+            required
+        /></label>
+        <label
+          >验收标准（每行一条）<textarea
+            name="criteria"
+            rows="3"
+            placeholder="说明预期行为或验收条件"
+          ></textarea>
+        </label>
+        <label
+          >动作参数 JSON（可选）<textarea
+            name="parameters"
+            rows="5"
+            spellcheck="false"
+            placeholder='{"test_ref":{"test_id":"…"}}'
+          ></textarea></label
+        ><label
+          >额外约束 JSON（可选）<textarea
+            name="constraints"
+            rows="3"
+            spellcheck="false"
+            placeholder='{"objective_spec":{…}}'
+          ></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" class="outline-button" data-close>取消</button
+          ><button class="primary-button">应用条件</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="connection-dialog" class="wide-dialog">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">PLATFORM CONNECTION</span>
+          <h2>接入测试平台</h2>
+        </div>
+        <button data-close aria-label="关闭">×</button>
+      </div>
+      <p>
+        工作台与调查内核共用 Provider。平台地址和凭据在 Agent
+        服务进程配置，浏览器不持有平台服务令牌。
+      </p>
+      <div class="connection-types">
+        <button class="active" id="guide-lyra">本机 MCP</button
+        ><button id="guide-mcp">远程 MCP</button>
+      </div>
+      <div class="form-grid">
+        <label
+          >Provider ID<input
+            id="guide-provider"
+            value="platform-local" /></label
+        ><label>项目 ID<input id="guide-project" value="default" /></label
+        ><label
+          >服务地址<input
+            id="guide-url"
+            value="http://127.0.0.1:8010/mcp" /></label
+        ><label
+          >MCP 访问令牌环境变量（可选）<input
+            id="guide-token-env"
+            placeholder="TEST_PLATFORM_MCP_TOKEN"
+        /></label>
+      </div>
+      <p class="form-note" id="guide-note">
+        在服务端配置 MCP 地址和项目授权；平台凭据由 MCP 服务管理，受保护的 MCP 服务可配置访问令牌。
+      </p>
+      <label
+        >连接配置概览
+        <pre id="connection-config"></pre>
+      </label>
+      <div class="dialog-actions">
+        <button class="outline-button" id="copy-config">复制服务端配置</button
+        ><button class="primary-button" data-close>完成</button>
+      </div>
+    </dialog>
+    <dialog id="evidence-dialog" class="wide-dialog">
+      <div class="dialog-heading">
+        <h2>证据详情</h2>
+        <button data-close aria-label="关闭">×</button>
+      </div>
+      <pre id="evidence-metadata"></pre>
+      <img
+        id="evidence-image"
+        class="evidence-image"
+        alt="测试证据截图"
+        hidden
+      />
+      <pre id="evidence-content" class="evidence-content"></pre>
+      <div class="dialog-actions">
+        <button class="outline-button" id="evidence-download">
+          下载原始证据
+        </button>
+        <button class="outline-button" id="evidence-next" hidden>
+          读取下一段</button
+        ><button class="primary-button" data-close>关闭</button>
+      </div>
+    </dialog>
+    <dialog id="recall-dialog">
+      <h2 id="recall-heading">查找历史调查</h2>
+      <p>按目标关键词查找旧报告。关联后可回读报告与其引用的原文，历史材料保留原调查的范围。</p>
+      <label>目标关键词 <input id="recall-query" maxlength="200" /></label>
+      <button id="recall-search" class="outline-button">查找</button>
+      <div id="recall-results" class="recall-results"></div>
+      <div class="dialog-actions">
+        <button id="recall-more" class="outline-button" hidden>继续查找</button>
+        <button class="primary-button" data-close>关闭</button>
+      </div>
+    </dialog>
+    <dialog id="overview-dialog">
+      <h2>会话总览</h2>
+      <p id="overview-summary"></p>
+      <div id="overview-content" class="overview-content"></div>
+      <div class="dialog-actions"><button class="primary-button" data-close>关闭</button></div>
+    </dialog>
+    <dialog id="routing-dialog">
+      <h2>确认消息归属</h2>
+      <p id="routing-message"></p>
+      <div id="routing-choices" class="routing-choices"></div>
+      <p id="routing-more" hidden>还有未列出的任务。可关闭此窗口后选择任务，或在消息中写明任务编号。</p>
+      <div class="dialog-actions"><button class="primary-button" data-close>返回编辑</button></div>
+    </dialog>
+    <dialog id="input-returns-dialog">
+      <h2>退回协调层的补充</h2>
+      <p id="input-returns-summary"></p>
+      <p>原调查会继续自己的任务。若要作为新任务处理，请先新增独立任务，再把原消息转交给它。</p>
+      <div id="input-returns-content" class="input-returns-content"></div>
+      <div class="dialog-actions"><button class="primary-button" data-close>关闭</button></div>
+    </dialog>
+    <dialog id="harness-dialog">
+      <h2>事件与任务综合</h2>
+      <p class="form-note">观察事件需经取证核验；综合报告保留各任务的来源与适用范围。</p>
+      <div id="harness-content"></div>
+      <form method="dialog"><button class="outline-button">关闭</button></form>
+    </dialog>
+  </body>
+</html>

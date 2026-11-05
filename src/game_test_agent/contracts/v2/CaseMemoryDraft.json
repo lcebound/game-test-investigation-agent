@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "CaseApplicability": {
+      "additionalProperties": false,
+      "properties": {
+        "build_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Build Ids",
+          "type": "array"
+        },
+        "build_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "engine_family": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Family"
+        },
+        "engine_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "environment_fingerprints": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Environment Fingerprints",
+          "type": "array"
+        }
+      },
+      "title": "CaseApplicability",
+      "type": "object"
+    },
+    "CaseMemoryContent": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmed_outcome": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Confirmed Outcome",
+          "type": "string"
+        },
+        "effective_experiments": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Effective Experiments",
+          "type": "array"
+        },
+        "ineffective_experiments": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Ineffective Experiments",
+          "type": "array"
+        },
+        "investigation_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Investigation Path",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "symptoms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Symptoms",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Tags",
+          "type": "array"
+        },
+        "title": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "symptoms",
+        "confirmed_outcome"
+      ],
+      "title": "CaseMemoryContent",
+      "type": "object"
+    },
+    "VersionInterval": {
+      "additionalProperties": false,
+      "description": "Opaque, provider-neutral applicability interval.\n\nMatching uses a deterministic natural-token ordering. Providers should supply\nnormalized engine/build revisions; exact allow-lists remain available when an\nordering is not meaningful (for example source-control hashes).",
+      "properties": {
+        "max_exclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Exclusive"
+        },
+        "min_inclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Inclusive"
+        }
+      },
+      "title": "VersionInterval",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CaseMemoryDraft",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "$ref": "#/$defs/CaseApplicability"
+    },
+    "confidence": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "content": {
+      "$ref": "#/$defs/CaseMemoryContent"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "title": "CaseMemoryDraft",
+  "type": "object"
+}

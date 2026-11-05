@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "game-test-agent"
+version = "0.1.0"
+description = "Evidence-driven, provider-neutral game test investigation agent"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110,<1",
+  "httpx>=0.27,<1",
+  "mcp>=2.2,<3",
+  "jsonschema>=4.23,<5",
+  "pydantic>=2.12.2,<3",
+  "uvicorn[standard]>=0.30,<1",
+  "openai-agents==0.22.2",
+]
+
+[project.optional-dependencies]
+temporal = ["temporalio>=1.10,<2"]
+mq = ["aio-pika>=9.4,<10"]
+mysql = ["pymysql>=1.1,<2"]
+s3 = ["boto3>=1.35,<2"]
+auth = ["pyjwt[crypto]>=2.10,<3"]
+production = [
+  "temporalio>=1.10,<2",
+  "aio-pika>=9.4,<10",
+  "pymysql>=1.1,<2",
+  "boto3>=1.35,<2",
+  "pyjwt[crypto]>=2.10,<3",
+]
+dev = ["httpx>=0.27,<1", "pytest>=8,<10", "pytest-asyncio>=0.23,<2", "ruff>=0.8,<1", "hatchling>=1.27,<2"]
+
+[project.scripts]
+game-test-agent = "game_test_agent.__main__:main"
+game-test-agent-temporal-worker = "game_test_agent.workflows.worker:main"
+game-test-agent-bridge = "game_test_agent.events.bridge:main"
+game-test-reference-mcp = "game_test_agent.adapters.reference_mcp:main"
+game-test-agent-doctor = "game_test_agent.doctor:main"
+game-test-agent-eval = "game_test_agent.evals.runner:main"
+game-test-agent-harness-eval = "game_test_agent.evals.harness_live:cli"
+game-test-agent-trajectory-eval = "game_test_agent.evals.trajectory:main"
+game-test-agent-branch-eval = "game_test_agent.evals.branching:main"
+game-test-agent-mysql-migrate = "game_test_agent.storage.mysql_migrate:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/game_test_agent"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"deploy/mysql" = "game_test_agent/storage/mysql_migrations"
+"docs/third-party-notices/microsoft-mxc.txt" = "game_test_agent/analysis/MICROSOFT-MXC-NOTICE.txt"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

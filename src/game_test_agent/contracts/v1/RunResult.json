@@ -1,0 +1,281 @@
+{
+  "$defs": {
+    "BuildRef": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "BuildRef",
+      "type": "object"
+    },
+    "EvidenceManifestItem": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "collected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collected At"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "locator": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Locator",
+          "type": "object"
+        },
+        "mime_type": {
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "producer": {
+          "title": "Producer",
+          "type": "string"
+        },
+        "producer_version": {
+          "title": "Producer Version",
+          "type": "string"
+        },
+        "quality": {
+          "enum": [
+            "verified",
+            "partial",
+            "untrusted",
+            "simulated"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "artifact_ref",
+        "kind",
+        "mime_type",
+        "sha256",
+        "locator",
+        "quality",
+        "producer",
+        "producer_version"
+      ],
+      "title": "EvidenceManifestItem",
+      "type": "object"
+    },
+    "RunRef": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_id",
+        "project_id",
+        "run_id"
+      ],
+      "title": "RunRef",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v1/RunResult",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "build_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BuildRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "environment": {
+      "additionalProperties": true,
+      "title": "Environment",
+      "type": "object"
+    },
+    "environment_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Environment Fingerprint"
+    },
+    "evidence_manifest": {
+      "items": {
+        "$ref": "#/$defs/EvidenceManifestItem"
+      },
+      "title": "Evidence Manifest",
+      "type": "array"
+    },
+    "execution_source": {
+      "enum": [
+        "real",
+        "simulated"
+      ],
+      "title": "Execution Source",
+      "type": "string"
+    },
+    "execution_status": {
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "Execution Status",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Finished At"
+    },
+    "missing_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Fields",
+      "type": "array"
+    },
+    "provider_status": {
+      "title": "Provider Status",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "run_ref": {
+      "$ref": "#/$defs/RunRef"
+    },
+    "started_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Started At"
+    },
+    "test_verdict": {
+      "enum": [
+        "passed",
+        "failed",
+        "not_run",
+        "unknown"
+      ],
+      "title": "Test Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_ref",
+    "revision",
+    "execution_status",
+    "test_verdict",
+    "execution_source",
+    "provider_status"
+  ],
+  "title": "RunResult",
+  "type": "object"
+}

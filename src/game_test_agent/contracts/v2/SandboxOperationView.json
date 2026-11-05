@@ -1,0 +1,39 @@
+{
+  "$id": "contract://v2/SandboxOperationView",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "execution_status": {
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "Execution Status",
+      "type": "string"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "operation_id": {
+      "title": "Operation Id",
+      "type": "string"
+    },
+    "runner_id": {
+      "title": "Runner Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "runner_id",
+    "operation_id",
+    "execution_status"
+  ],
+  "title": "SandboxOperationView",
+  "type": "object"
+}

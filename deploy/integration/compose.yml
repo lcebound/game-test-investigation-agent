@@ -1,0 +1,32 @@
+services:
+  mysql:
+    image: ${GTA_TEST_MYSQL_IMAGE:-mysql:8.4.10}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${GTA_TEST_MYSQL_PASSWORD:?test password required}
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: gta_dependency_checks
+    ports:
+      - target: 3306
+        host_ip: 127.0.0.1
+        published: "0"
+    volumes:
+      - mysql-data:/var/lib/mysql
+  s3:
+    image: ${GTA_TEST_S3_IMAGE:-gta-dependency-minio:2025-10-15}
+    build:
+      context: .
+      dockerfile: minio.Dockerfile
+    environment:
+      MINIO_ROOT_USER: gta-integration
+      MINIO_ROOT_PASSWORD: ${GTA_TEST_S3_PASSWORD:?test password required}
+      MINIO_KMS_SECRET_KEY: ${GTA_TEST_S3_KMS:?test encryption key required}
+    command: [server, /data, --address, ":9000"]
+    ports:
+      - target: 9000
+        host_ip: 127.0.0.1
+        published: "0"
+    volumes:
+      - s3-data:/data
+volumes:
+  mysql-data:
+  s3-data:

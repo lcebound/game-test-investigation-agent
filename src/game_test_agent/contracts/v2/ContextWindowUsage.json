@@ -1,0 +1,59 @@
+{
+  "$id": "contract://v2/ContextWindowUsage",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "estimated_input_tokens": {
+      "minimum": 0,
+      "title": "Estimated Input Tokens",
+      "type": "integer"
+    },
+    "estimator": {
+      "const": "utf8-bytes-conservative-v1",
+      "default": "utf8-bytes-conservative-v1",
+      "title": "Estimator",
+      "type": "string"
+    },
+    "mandatory_tokens": {
+      "minimum": 0,
+      "title": "Mandatory Tokens",
+      "type": "integer"
+    },
+    "omitted_records": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Omitted Records",
+      "type": "object"
+    },
+    "optional_tokens": {
+      "minimum": 0,
+      "title": "Optional Tokens",
+      "type": "integer"
+    },
+    "over_budget": {
+      "default": false,
+      "title": "Over Budget",
+      "type": "boolean"
+    },
+    "reserved_output_tokens": {
+      "minimum": 0,
+      "title": "Reserved Output Tokens",
+      "type": "integer"
+    },
+    "window_limit_tokens": {
+      "minimum": 1,
+      "title": "Window Limit Tokens",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "window_limit_tokens",
+    "reserved_output_tokens",
+    "mandatory_tokens",
+    "optional_tokens",
+    "estimated_input_tokens"
+  ],
+  "title": "ContextWindowUsage",
+  "type": "object"
+}

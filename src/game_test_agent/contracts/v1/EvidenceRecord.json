@@ -1,0 +1,247 @@
+{
+  "$defs": {
+    "BuildRef": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "BuildRef",
+      "type": "object"
+    },
+    "EvidenceLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "line_range",
+            "sample_window",
+            "time_range",
+            "video_timecode",
+            "region"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "title": "EvidenceLocator",
+      "type": "object"
+    },
+    "RunRef": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_id",
+        "project_id",
+        "run_id"
+      ],
+      "title": "RunRef",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v1/EvidenceRecord",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_ref": {
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "build_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BuildRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "collected_at": {
+      "format": "date-time",
+      "title": "Collected At",
+      "type": "string"
+    },
+    "derived_from": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Derived From",
+      "type": "array"
+    },
+    "environment_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Environment Fingerprint"
+    },
+    "evidence_id": {
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "execution_source": {
+      "default": "unknown",
+      "enum": [
+        "real",
+        "simulated",
+        "unknown"
+      ],
+      "title": "Execution Source",
+      "type": "string"
+    },
+    "kind": {
+      "title": "Kind",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "locator": {
+      "$ref": "#/$defs/EvidenceLocator"
+    },
+    "mime_type": {
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "parser_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parser Version"
+    },
+    "producer": {
+      "title": "Producer",
+      "type": "string"
+    },
+    "producer_version": {
+      "title": "Producer Version",
+      "type": "string"
+    },
+    "project_id": {
+      "title": "Project Id",
+      "type": "string"
+    },
+    "quality": {
+      "enum": [
+        "verified",
+        "partial",
+        "untrusted",
+        "simulated"
+      ],
+      "title": "Quality",
+      "type": "string"
+    },
+    "retrieval_status": {
+      "default": "ready",
+      "enum": [
+        "ready",
+        "pending",
+        "expired",
+        "not_found"
+      ],
+      "title": "Retrieval Status",
+      "type": "string"
+    },
+    "run_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RunRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sha256": {
+      "pattern": "^[0-9a-fA-F]{64}$",
+      "title": "Sha256",
+      "type": "string"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "tenant_id",
+    "project_id",
+    "artifact_ref",
+    "kind",
+    "mime_type",
+    "sha256",
+    "producer",
+    "producer_version",
+    "collected_at",
+    "locator",
+    "quality"
+  ],
+  "title": "EvidenceRecord",
+  "type": "object"
+}

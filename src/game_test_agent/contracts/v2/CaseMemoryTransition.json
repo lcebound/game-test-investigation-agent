@@ -1,0 +1,71 @@
+{
+  "$defs": {
+    "CaseMemoryStatus": {
+      "enum": [
+        "candidate",
+        "reviewed",
+        "active",
+        "deprecated",
+        "retracted"
+      ],
+      "title": "CaseMemoryStatus",
+      "type": "string"
+    }
+  },
+  "$id": "contract://v2/CaseMemoryTransition",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "confidence": {
+      "anyOf": [
+        {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "expected_revision": {
+      "minimum": 1,
+      "title": "Expected Revision",
+      "type": "integer"
+    },
+    "reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "review_notes": {
+      "anyOf": [
+        {
+          "maxLength": 10000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Review Notes"
+    },
+    "target_status": {
+      "$ref": "#/$defs/CaseMemoryStatus"
+    }
+  },
+  "required": [
+    "expected_revision",
+    "target_status",
+    "reason"
+  ],
+  "title": "CaseMemoryTransition",
+  "type": "object"
+}

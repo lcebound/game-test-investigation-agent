@@ -1,0 +1,59 @@
+{
+  "$id": "contract://v2/AnalysisOutputItem",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_ref": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "kind": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Kind",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 50,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "mime_type": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "output_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Output Id",
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Sha256",
+      "type": "string"
+    },
+    "size_bytes": {
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "output_id",
+    "artifact_ref",
+    "kind",
+    "mime_type",
+    "sha256",
+    "size_bytes"
+  ],
+  "title": "AnalysisOutputItem",
+  "type": "object"
+}

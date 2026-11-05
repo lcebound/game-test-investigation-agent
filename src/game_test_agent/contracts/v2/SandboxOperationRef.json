@@ -1,0 +1,46 @@
+{
+  "$id": "contract://v2/SandboxOperationRef",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "execution_status": {
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "canceled",
+        "unknown"
+      ],
+      "title": "Execution Status",
+      "type": "string"
+    },
+    "fencing_token": {
+      "maxLength": 512,
+      "minLength": 16,
+      "title": "Fencing Token",
+      "type": "string"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "operation_id": {
+      "title": "Operation Id",
+      "type": "string"
+    },
+    "runner_id": {
+      "title": "Runner Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "runner_id",
+    "operation_id",
+    "fencing_token",
+    "execution_status"
+  ],
+  "title": "SandboxOperationRef",
+  "type": "object"
+}

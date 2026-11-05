@@ -1,0 +1,1633 @@
+[
+  {
+    "case_id": "demo-performance",
+    "category": "performance",
+    "split": "train",
+    "split_group": "demo-performance",
+    "initial_context": {
+      "investigation": {
+        "investigation_id": "demo-performance",
+        "workflow_id": "demo-performance",
+        "status": "planning",
+        "resolution": null,
+        "revision": 1,
+        "transition_seq": 1,
+        "request": {
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "objective": {
+            "objective_id": "diagnose",
+            "description": "Classify fixture observations",
+            "acceptance_criteria": [],
+            "priority": "normal"
+          },
+          "build_ref": {
+            "id": "fixture-build",
+            "revision": null,
+            "configuration": {}
+          },
+          "constraints": {
+            "action_parameters": {
+              "case": "demo"
+            },
+            "environment_fingerprint": "fixture-env",
+            "action_target_selector": {
+              "environment_fingerprint": "fixture-env"
+            }
+          },
+          "budget": {
+            "max_rounds": 4,
+            "max_real_runs": 3,
+            "max_tool_reads": 40,
+            "max_device_minutes": 20.0,
+            "max_wall_seconds": 1800
+          },
+          "source": "user",
+          "root_event_id": null
+        },
+        "created_at": "2026-09-30T00:00:00Z",
+        "updated_at": "2026-09-30T00:00:00Z",
+        "stop_reason": null
+      },
+      "working_state": {
+        "schema_version": "2.0",
+        "investigation_id": "demo-performance",
+        "state_revision": 1,
+        "objective": {
+          "objective_id": "diagnose",
+          "description": "Classify fixture observations",
+          "acceptance_criteria": [],
+          "priority": "normal"
+        },
+        "assessment": null,
+        "active_hypotheses": [
+          {
+            "hypothesis_id": "cpu",
+            "investigation_id": "demo-performance",
+            "revision": 1,
+            "statement": "Fixture alternative cpu",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "columns.frame_ms.median",
+                "comparator": "eq",
+                "value": 25.0,
+                "unit": "ms",
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              },
+              {
+                "observation_key": "columns.frame_ms.median",
+                "comparator": "eq",
+                "value": 25.0,
+                "unit": "ms",
+                "capability_id": "csv_summary_v1",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          },
+          {
+            "hypothesis_id": "gpu",
+            "investigation_id": "demo-performance",
+            "revision": 1,
+            "statement": "Fixture alternative gpu",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "columns.frame_ms.median",
+                "comparator": "eq",
+                "value": 15.0,
+                "unit": "ms",
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              },
+              {
+                "observation_key": "columns.frame_ms.median",
+                "comparator": "eq",
+                "value": 15.0,
+                "unit": "ms",
+                "capability_id": "csv_summary_v1",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          }
+        ],
+        "refuted_hypotheses": [],
+        "completed_actions": [],
+        "failed_actions": [],
+        "in_flight_actions": [],
+        "analysis_jobs": [],
+        "recent_candidate_outcomes": [],
+        "pending_evidence_action_ids": [],
+        "unresolved_questions": [],
+        "budget_remaining": {},
+        "next_candidates": []
+      },
+      "plan": null,
+      "capabilities": [
+        {
+          "schema_version": "2.0",
+          "capability_id": "test.run",
+          "capability_version": "1",
+          "provider_id": "offline",
+          "provider_revision": "1",
+          "tool_name": "submit",
+          "project_ids": [
+            "demo"
+          ],
+          "supported_engines": [],
+          "target_kinds": [],
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "case": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "case"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": {},
+          "availability": "ready",
+          "preconditions": [],
+          "effects": [],
+          "risk_level": "bounded_execution",
+          "required_scopes": [],
+          "execution_owner": "offline",
+          "resource_domain": "device",
+          "idempotency": "required",
+          "async": true,
+          "supports_action_lookup": true,
+          "evidence_types": [],
+          "controllable_variables": [
+            "build_ref",
+            "environment_fingerprint"
+          ],
+          "estimated_cost": {
+            "device_minutes": 2.0
+          },
+          "operation_kind": "experiment",
+          "creates_run": true,
+          "requires_existing_run": false,
+          "resource_mutation": "bounded",
+          "cost_category": "execution"
+        }
+      ],
+      "evidence": [
+        {
+          "schema_version": "2.0",
+          "evidence_id": "source-1",
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "run_ref": null,
+          "build_ref": null,
+          "environment_fingerprint": null,
+          "execution_source": "unknown",
+          "artifact_ref": "offline-fixture/source-1",
+          "kind": "metrics",
+          "mime_type": "text/csv",
+          "sha256": "e72e3feb6922826a7aad5fbdfecaea976bb8c6646e6a62a982503fe899624559",
+          "producer": "offline-fixture",
+          "producer_version": "1",
+          "collected_at": "2026-09-30T00:00:00Z",
+          "locator": {
+            "kind": "sample_window",
+            "value": "all"
+          },
+          "quality": "verified",
+          "retrieval_status": "ready",
+          "parser_version": null,
+          "derived_from": [],
+          "limitations": [],
+          "source_type": "user_upload",
+          "source_evidence_id": "source-1",
+          "source_revision": 1,
+          "action_id": null,
+          "experiment_id": null,
+          "run_sequence": null,
+          "analysis_job_id": null
+        }
+      ],
+      "excerpts": [],
+      "facts": [],
+      "hypotheses": [
+        {
+          "hypothesis_id": "cpu",
+          "investigation_id": "demo-performance",
+          "revision": 1,
+          "statement": "Fixture alternative cpu",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "columns.frame_ms.median",
+              "comparator": "eq",
+              "value": 25.0,
+              "unit": "ms",
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            },
+            {
+              "observation_key": "columns.frame_ms.median",
+              "comparator": "eq",
+              "value": 25.0,
+              "unit": "ms",
+              "capability_id": "csv_summary_v1",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        },
+        {
+          "hypothesis_id": "gpu",
+          "investigation_id": "demo-performance",
+          "revision": 1,
+          "statement": "Fixture alternative gpu",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "columns.frame_ms.median",
+              "comparator": "eq",
+              "value": 15.0,
+              "unit": "ms",
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            },
+            {
+              "observation_key": "columns.frame_ms.median",
+              "comparator": "eq",
+              "value": 15.0,
+              "unit": "ms",
+              "capability_id": "csv_summary_v1",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        }
+      ],
+      "actions": [],
+      "user_inputs": [],
+      "budget": {
+        "tool_reads": 0,
+        "real_runs": 0,
+        "reserved_device_minutes": 0
+      },
+      "diagnostic_guidance": {},
+      "limitations": [],
+      "context_window": {
+        "estimator": "utf8-bytes-conservative-v1",
+        "window_limit_tokens": 24000,
+        "reserved_output_tokens": 4000,
+        "mandatory_tokens": 0,
+        "optional_tokens": 0,
+        "estimated_input_tokens": 0,
+        "over_budget": false,
+        "omitted_records": {}
+      },
+      "summary": null,
+      "historical_cases": [],
+      "project_pack": null,
+      "context_manifest": null
+    },
+    "operations": [
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "experiment",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": "test.run",
+            "provider_id": "offline",
+            "evidence_ids": [],
+            "expected_observation": "New fixture measurement",
+            "reason_summary": "Scripted baseline repeats the test",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": null,
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {
+            "case": "demo"
+          }
+        },
+        "cost": {
+          "simulated_runs": 1,
+          "device_minutes": 2.0,
+          "tool_reads": 0
+        }
+      },
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "analyze",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": null,
+            "provider_id": null,
+            "evidence_ids": [
+              "source-1"
+            ],
+            "expected_observation": "Inspect existing fixture evidence",
+            "reason_summary": "Read first",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": null,
+            "search_query": null,
+            "analysis_request": {
+              "recipe_id": "csv_summary_v1",
+              "recipe_version": "1",
+              "input_evidence_ids": [
+                "source-1"
+              ],
+              "parameters": {}
+            },
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {}
+        },
+        "cost": {
+          "simulated_runs": 0,
+          "device_minutes": 0.0,
+          "tool_reads": 1
+        }
+      }
+    ],
+    "initial_node": "start",
+    "nodes": [
+      {
+        "node_id": "start",
+        "observation": {
+          "observation_id": "observation-0",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {}
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "4f244d4a4f90d0e6f86e4996093a5d36cc1928b2b9fa10b0fc114c0518c3e50e",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {},
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      },
+      {
+        "node_id": "observed",
+        "observation": {
+          "observation_id": "observation-1",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {
+            "frame_ms": 15,
+            "sample_count": 3,
+            "unit": "ms"
+          }
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "4f244d4a4f90d0e6f86e4996093a5d36cc1928b2b9fa10b0fc114c0518c3e50e",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {
+          "gpu": [
+            "source-1"
+          ]
+        },
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      }
+    ]
+  },
+  {
+    "case_id": "demo-functional",
+    "category": "functional",
+    "split": "train",
+    "split_group": "demo-functional",
+    "initial_context": {
+      "investigation": {
+        "investigation_id": "demo-functional",
+        "workflow_id": "demo-functional",
+        "status": "planning",
+        "resolution": null,
+        "revision": 1,
+        "transition_seq": 1,
+        "request": {
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "objective": {
+            "objective_id": "diagnose",
+            "description": "Classify fixture observations",
+            "acceptance_criteria": [],
+            "priority": "normal"
+          },
+          "build_ref": {
+            "id": "fixture-build",
+            "revision": null,
+            "configuration": {}
+          },
+          "constraints": {
+            "action_parameters": {
+              "case": "demo"
+            },
+            "environment_fingerprint": "fixture-env",
+            "action_target_selector": {
+              "environment_fingerprint": "fixture-env"
+            }
+          },
+          "budget": {
+            "max_rounds": 4,
+            "max_real_runs": 3,
+            "max_tool_reads": 40,
+            "max_device_minutes": 20.0,
+            "max_wall_seconds": 1800
+          },
+          "source": "user",
+          "root_event_id": null
+        },
+        "created_at": "2026-09-30T00:00:00Z",
+        "updated_at": "2026-09-30T00:00:00Z",
+        "stop_reason": null
+      },
+      "working_state": {
+        "schema_version": "2.0",
+        "investigation_id": "demo-functional",
+        "state_revision": 1,
+        "objective": {
+          "objective_id": "diagnose",
+          "description": "Classify fixture observations",
+          "acceptance_criteria": [],
+          "priority": "normal"
+        },
+        "assessment": null,
+        "active_hypotheses": [
+          {
+            "hypothesis_id": "asset",
+            "investigation_id": "demo-functional",
+            "revision": 1,
+            "statement": "Fixture alternative asset",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "failed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          },
+          {
+            "hypothesis_id": "network",
+            "investigation_id": "demo-functional",
+            "revision": 1,
+            "statement": "Fixture alternative network",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "passed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          }
+        ],
+        "refuted_hypotheses": [],
+        "completed_actions": [],
+        "failed_actions": [],
+        "in_flight_actions": [],
+        "analysis_jobs": [],
+        "recent_candidate_outcomes": [],
+        "pending_evidence_action_ids": [],
+        "unresolved_questions": [],
+        "budget_remaining": {},
+        "next_candidates": []
+      },
+      "plan": null,
+      "capabilities": [
+        {
+          "schema_version": "2.0",
+          "capability_id": "test.run",
+          "capability_version": "1",
+          "provider_id": "offline",
+          "provider_revision": "1",
+          "tool_name": "submit",
+          "project_ids": [
+            "demo"
+          ],
+          "supported_engines": [],
+          "target_kinds": [],
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "case": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "case"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": {},
+          "availability": "ready",
+          "preconditions": [],
+          "effects": [],
+          "risk_level": "bounded_execution",
+          "required_scopes": [],
+          "execution_owner": "offline",
+          "resource_domain": "device",
+          "idempotency": "required",
+          "async": true,
+          "supports_action_lookup": true,
+          "evidence_types": [],
+          "controllable_variables": [
+            "build_ref",
+            "environment_fingerprint"
+          ],
+          "estimated_cost": {
+            "device_minutes": 2.0
+          },
+          "operation_kind": "experiment",
+          "creates_run": true,
+          "requires_existing_run": false,
+          "resource_mutation": "bounded",
+          "cost_category": "execution"
+        }
+      ],
+      "evidence": [
+        {
+          "schema_version": "2.0",
+          "evidence_id": "source-1",
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "run_ref": null,
+          "build_ref": null,
+          "environment_fingerprint": null,
+          "execution_source": "unknown",
+          "artifact_ref": "offline-fixture/source-1",
+          "kind": "runtime_log",
+          "mime_type": "text/plain",
+          "sha256": "0e000be55453be7e8ec550c1cff931ebbb3069fa24a6b767d6e119fb76530b68",
+          "producer": "offline-fixture",
+          "producer_version": "1",
+          "collected_at": "2026-09-30T00:00:00Z",
+          "locator": {
+            "kind": "sample_window",
+            "value": "all"
+          },
+          "quality": "verified",
+          "retrieval_status": "ready",
+          "parser_version": null,
+          "derived_from": [],
+          "limitations": [],
+          "source_type": "user_upload",
+          "source_evidence_id": "source-1",
+          "source_revision": 1,
+          "action_id": null,
+          "experiment_id": null,
+          "run_sequence": null,
+          "analysis_job_id": null
+        }
+      ],
+      "excerpts": [],
+      "facts": [],
+      "hypotheses": [
+        {
+          "hypothesis_id": "asset",
+          "investigation_id": "demo-functional",
+          "revision": 1,
+          "statement": "Fixture alternative asset",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "failed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        },
+        {
+          "hypothesis_id": "network",
+          "investigation_id": "demo-functional",
+          "revision": 1,
+          "statement": "Fixture alternative network",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "passed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        }
+      ],
+      "actions": [],
+      "user_inputs": [],
+      "budget": {
+        "tool_reads": 0,
+        "real_runs": 0,
+        "reserved_device_minutes": 0
+      },
+      "diagnostic_guidance": {},
+      "limitations": [],
+      "context_window": {
+        "estimator": "utf8-bytes-conservative-v1",
+        "window_limit_tokens": 24000,
+        "reserved_output_tokens": 4000,
+        "mandatory_tokens": 0,
+        "optional_tokens": 0,
+        "estimated_input_tokens": 0,
+        "over_budget": false,
+        "omitted_records": {}
+      },
+      "summary": null,
+      "historical_cases": [],
+      "project_pack": null,
+      "context_manifest": null
+    },
+    "operations": [
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "experiment",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": "test.run",
+            "provider_id": "offline",
+            "evidence_ids": [],
+            "expected_observation": "New fixture measurement",
+            "reason_summary": "Scripted baseline repeats the test",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": null,
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {
+            "case": "demo"
+          }
+        },
+        "cost": {
+          "simulated_runs": 1,
+          "device_minutes": 2.0,
+          "tool_reads": 0
+        }
+      },
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "retrieve_evidence",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": null,
+            "provider_id": null,
+            "evidence_ids": [
+              "source-1"
+            ],
+            "expected_observation": "Inspect existing fixture evidence",
+            "reason_summary": "Read first",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": {
+              "evidence_id": "source-1",
+              "purpose": "Inspect log",
+              "byte_offset": 0,
+              "max_bytes": 4096
+            },
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {}
+        },
+        "cost": {
+          "simulated_runs": 0,
+          "device_minutes": 0.0,
+          "tool_reads": 1
+        }
+      }
+    ],
+    "initial_node": "start",
+    "nodes": [
+      {
+        "node_id": "start",
+        "observation": {
+          "observation_id": "observation-0",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {}
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "610844974dd55d91d28d7e075ea74f97ef36f31d8545d9be469899530e40d8b4",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {},
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      },
+      {
+        "node_id": "observed",
+        "observation": {
+          "observation_id": "observation-1",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {
+            "error_code": "ASSET_MISSING"
+          }
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "610844974dd55d91d28d7e075ea74f97ef36f31d8545d9be469899530e40d8b4",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {
+          "asset": [
+            "source-1"
+          ]
+        },
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      }
+    ]
+  },
+  {
+    "case_id": "demo-sufficient",
+    "category": "functional",
+    "split": "train",
+    "split_group": "demo-sufficient",
+    "initial_context": {
+      "investigation": {
+        "investigation_id": "demo-sufficient",
+        "workflow_id": "demo-sufficient",
+        "status": "planning",
+        "resolution": null,
+        "revision": 1,
+        "transition_seq": 1,
+        "request": {
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "objective": {
+            "objective_id": "diagnose",
+            "description": "Classify fixture observations",
+            "acceptance_criteria": [],
+            "priority": "normal"
+          },
+          "build_ref": {
+            "id": "fixture-build",
+            "revision": null,
+            "configuration": {}
+          },
+          "constraints": {
+            "action_parameters": {
+              "case": "demo"
+            },
+            "environment_fingerprint": "fixture-env",
+            "action_target_selector": {
+              "environment_fingerprint": "fixture-env"
+            }
+          },
+          "budget": {
+            "max_rounds": 4,
+            "max_real_runs": 3,
+            "max_tool_reads": 40,
+            "max_device_minutes": 20.0,
+            "max_wall_seconds": 1800
+          },
+          "source": "user",
+          "root_event_id": null
+        },
+        "created_at": "2026-09-30T00:00:00Z",
+        "updated_at": "2026-09-30T00:00:00Z",
+        "stop_reason": null
+      },
+      "working_state": {
+        "schema_version": "2.0",
+        "investigation_id": "demo-sufficient",
+        "state_revision": 1,
+        "objective": {
+          "objective_id": "diagnose",
+          "description": "Classify fixture observations",
+          "acceptance_criteria": [],
+          "priority": "normal"
+        },
+        "assessment": null,
+        "active_hypotheses": [
+          {
+            "hypothesis_id": "asset",
+            "investigation_id": "demo-sufficient",
+            "revision": 1,
+            "statement": "Fixture alternative asset",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "failed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          },
+          {
+            "hypothesis_id": "network",
+            "investigation_id": "demo-sufficient",
+            "revision": 1,
+            "statement": "Fixture alternative network",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "passed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          }
+        ],
+        "refuted_hypotheses": [],
+        "completed_actions": [],
+        "failed_actions": [],
+        "in_flight_actions": [],
+        "analysis_jobs": [],
+        "recent_candidate_outcomes": [],
+        "pending_evidence_action_ids": [],
+        "unresolved_questions": [],
+        "budget_remaining": {},
+        "next_candidates": []
+      },
+      "plan": null,
+      "capabilities": [
+        {
+          "schema_version": "2.0",
+          "capability_id": "test.run",
+          "capability_version": "1",
+          "provider_id": "offline",
+          "provider_revision": "1",
+          "tool_name": "submit",
+          "project_ids": [
+            "demo"
+          ],
+          "supported_engines": [],
+          "target_kinds": [],
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "case": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "case"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": {},
+          "availability": "ready",
+          "preconditions": [],
+          "effects": [],
+          "risk_level": "bounded_execution",
+          "required_scopes": [],
+          "execution_owner": "offline",
+          "resource_domain": "device",
+          "idempotency": "required",
+          "async": true,
+          "supports_action_lookup": true,
+          "evidence_types": [],
+          "controllable_variables": [
+            "build_ref",
+            "environment_fingerprint"
+          ],
+          "estimated_cost": {
+            "device_minutes": 2.0
+          },
+          "operation_kind": "experiment",
+          "creates_run": true,
+          "requires_existing_run": false,
+          "resource_mutation": "bounded",
+          "cost_category": "execution"
+        }
+      ],
+      "evidence": [
+        {
+          "schema_version": "2.0",
+          "evidence_id": "source-1",
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "run_ref": null,
+          "build_ref": null,
+          "environment_fingerprint": null,
+          "execution_source": "unknown",
+          "artifact_ref": "offline-fixture/source-1",
+          "kind": "runtime_log",
+          "mime_type": "text/plain",
+          "sha256": "0e000be55453be7e8ec550c1cff931ebbb3069fa24a6b767d6e119fb76530b68",
+          "producer": "offline-fixture",
+          "producer_version": "1",
+          "collected_at": "2026-09-30T00:00:00Z",
+          "locator": {
+            "kind": "sample_window",
+            "value": "all"
+          },
+          "quality": "verified",
+          "retrieval_status": "ready",
+          "parser_version": null,
+          "derived_from": [],
+          "limitations": [],
+          "source_type": "user_upload",
+          "source_evidence_id": "source-1",
+          "source_revision": 1,
+          "action_id": null,
+          "experiment_id": null,
+          "run_sequence": null,
+          "analysis_job_id": null
+        }
+      ],
+      "excerpts": [],
+      "facts": [],
+      "hypotheses": [
+        {
+          "hypothesis_id": "asset",
+          "investigation_id": "demo-sufficient",
+          "revision": 1,
+          "statement": "Fixture alternative asset",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "failed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        },
+        {
+          "hypothesis_id": "network",
+          "investigation_id": "demo-sufficient",
+          "revision": 1,
+          "statement": "Fixture alternative network",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "passed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        }
+      ],
+      "actions": [],
+      "user_inputs": [],
+      "budget": {
+        "tool_reads": 0,
+        "real_runs": 0,
+        "reserved_device_minutes": 0
+      },
+      "diagnostic_guidance": {},
+      "limitations": [],
+      "context_window": {
+        "estimator": "utf8-bytes-conservative-v1",
+        "window_limit_tokens": 24000,
+        "reserved_output_tokens": 4000,
+        "mandatory_tokens": 0,
+        "optional_tokens": 0,
+        "estimated_input_tokens": 0,
+        "over_budget": false,
+        "omitted_records": {}
+      },
+      "summary": null,
+      "historical_cases": [],
+      "project_pack": null,
+      "context_manifest": null
+    },
+    "operations": [
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "experiment",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": "test.run",
+            "provider_id": "offline",
+            "evidence_ids": [],
+            "expected_observation": "New fixture measurement",
+            "reason_summary": "Scripted baseline repeats the test",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": null,
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {
+            "case": "demo"
+          }
+        },
+        "cost": {
+          "simulated_runs": 1,
+          "device_minutes": 2.0,
+          "tool_reads": 0
+        }
+      },
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "retrieve_evidence",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": null,
+            "provider_id": null,
+            "evidence_ids": [
+              "source-1"
+            ],
+            "expected_observation": "Inspect existing fixture evidence",
+            "reason_summary": "Read first",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": {
+              "evidence_id": "source-1",
+              "purpose": "Inspect log",
+              "byte_offset": 0,
+              "max_bytes": 4096
+            },
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {}
+        },
+        "cost": {
+          "simulated_runs": 0,
+          "device_minutes": 0.0,
+          "tool_reads": 1
+        }
+      }
+    ],
+    "initial_node": "start",
+    "nodes": [
+      {
+        "node_id": "start",
+        "observation": {
+          "observation_id": "observation-0",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {
+            "error_code": "ASSET_MISSING"
+          }
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "610844974dd55d91d28d7e075ea74f97ef36f31d8545d9be469899530e40d8b4",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {
+          "asset": [
+            "source-1"
+          ]
+        },
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      },
+      {
+        "node_id": "observed",
+        "observation": {
+          "observation_id": "observation-1",
+          "evidence_ids": [
+            "source-1"
+          ],
+          "findings": {
+            "error_code": "ASSET_MISSING"
+          }
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "ok",
+            "next_node": "observed"
+          },
+          {
+            "operation_key": "610844974dd55d91d28d7e075ea74f97ef36f31d8545d9be469899530e40d8b4",
+            "status": "ok",
+            "next_node": "observed"
+          }
+        ],
+        "supported_reports": {
+          "asset": [
+            "source-1"
+          ]
+        },
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": true
+      }
+    ]
+  },
+  {
+    "case_id": "demo-missing-build",
+    "category": "missing_build",
+    "split": "train",
+    "split_group": "demo-missing-build",
+    "initial_context": {
+      "investigation": {
+        "investigation_id": "demo-missing-build",
+        "workflow_id": "demo-missing-build",
+        "status": "planning",
+        "resolution": null,
+        "revision": 1,
+        "transition_seq": 1,
+        "request": {
+          "tenant_id": "offline",
+          "project_id": "demo",
+          "objective": {
+            "objective_id": "diagnose",
+            "description": "Classify fixture observations",
+            "acceptance_criteria": [],
+            "priority": "normal"
+          },
+          "build_ref": null,
+          "constraints": {
+            "action_parameters": {
+              "case": "demo"
+            },
+            "environment_fingerprint": "fixture-env",
+            "action_target_selector": {
+              "environment_fingerprint": "fixture-env"
+            }
+          },
+          "budget": {
+            "max_rounds": 4,
+            "max_real_runs": 3,
+            "max_tool_reads": 40,
+            "max_device_minutes": 20.0,
+            "max_wall_seconds": 1800
+          },
+          "source": "user",
+          "root_event_id": null
+        },
+        "created_at": "2026-09-30T00:00:00Z",
+        "updated_at": "2026-09-30T00:00:00Z",
+        "stop_reason": null
+      },
+      "working_state": {
+        "schema_version": "2.0",
+        "investigation_id": "demo-missing-build",
+        "state_revision": 1,
+        "objective": {
+          "objective_id": "diagnose",
+          "description": "Classify fixture observations",
+          "acceptance_criteria": [],
+          "priority": "normal"
+        },
+        "assessment": null,
+        "active_hypotheses": [
+          {
+            "hypothesis_id": "asset",
+            "investigation_id": "demo-missing-build",
+            "revision": 1,
+            "statement": "Fixture alternative asset",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "failed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          },
+          {
+            "hypothesis_id": "network",
+            "investigation_id": "demo-missing-build",
+            "revision": 1,
+            "statement": "Fixture alternative network",
+            "scope": "fixture-build",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_evidence": [
+              "inspect existing measurement"
+            ],
+            "falsifiable_prediction": "Use only the declared fixture observation",
+            "observable_predictions": [
+              {
+                "observation_key": "test_verdict",
+                "comparator": "eq",
+                "value": "passed",
+                "unit": null,
+                "capability_id": "test.run",
+                "absolute_tolerance": 0.0,
+                "minimum_samples": 3
+              }
+            ],
+            "next_experiment": null,
+            "status": "proposed"
+          }
+        ],
+        "refuted_hypotheses": [],
+        "completed_actions": [],
+        "failed_actions": [],
+        "in_flight_actions": [],
+        "analysis_jobs": [],
+        "recent_candidate_outcomes": [],
+        "pending_evidence_action_ids": [],
+        "unresolved_questions": [],
+        "budget_remaining": {},
+        "next_candidates": []
+      },
+      "plan": null,
+      "capabilities": [
+        {
+          "schema_version": "2.0",
+          "capability_id": "test.run",
+          "capability_version": "1",
+          "provider_id": "offline",
+          "provider_revision": "1",
+          "tool_name": "submit",
+          "project_ids": [
+            "demo"
+          ],
+          "supported_engines": [],
+          "target_kinds": [],
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "case": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "case"
+            ],
+            "additionalProperties": false
+          },
+          "output_schema": {},
+          "availability": "ready",
+          "preconditions": [],
+          "effects": [],
+          "risk_level": "bounded_execution",
+          "required_scopes": [],
+          "execution_owner": "offline",
+          "resource_domain": "device",
+          "idempotency": "required",
+          "async": true,
+          "supports_action_lookup": true,
+          "evidence_types": [],
+          "controllable_variables": [
+            "build_ref",
+            "environment_fingerprint"
+          ],
+          "estimated_cost": {
+            "device_minutes": 2.0
+          },
+          "operation_kind": "experiment",
+          "creates_run": true,
+          "requires_existing_run": false,
+          "resource_mutation": "bounded",
+          "cost_category": "execution"
+        }
+      ],
+      "evidence": [],
+      "excerpts": [],
+      "facts": [],
+      "hypotheses": [
+        {
+          "hypothesis_id": "asset",
+          "investigation_id": "demo-missing-build",
+          "revision": 1,
+          "statement": "Fixture alternative asset",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "failed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        },
+        {
+          "hypothesis_id": "network",
+          "investigation_id": "demo-missing-build",
+          "revision": 1,
+          "statement": "Fixture alternative network",
+          "scope": "fixture-build",
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "inspect existing measurement"
+          ],
+          "falsifiable_prediction": "Use only the declared fixture observation",
+          "observable_predictions": [
+            {
+              "observation_key": "test_verdict",
+              "comparator": "eq",
+              "value": "passed",
+              "unit": null,
+              "capability_id": "test.run",
+              "absolute_tolerance": 0.0,
+              "minimum_samples": 3
+            }
+          ],
+          "next_experiment": null,
+          "status": "proposed"
+        }
+      ],
+      "actions": [],
+      "user_inputs": [],
+      "budget": {
+        "tool_reads": 0,
+        "real_runs": 0,
+        "reserved_device_minutes": 0
+      },
+      "diagnostic_guidance": {},
+      "limitations": [],
+      "context_window": {
+        "estimator": "utf8-bytes-conservative-v1",
+        "window_limit_tokens": 24000,
+        "reserved_output_tokens": 4000,
+        "mandatory_tokens": 0,
+        "optional_tokens": 0,
+        "estimated_input_tokens": 0,
+        "over_budget": false,
+        "omitted_records": {}
+      },
+      "summary": null,
+      "historical_cases": [],
+      "project_pack": null,
+      "context_manifest": null
+    },
+    "operations": [
+      {
+        "operation": {
+          "decision": {
+            "schema_version": "2.0",
+            "kind": "experiment",
+            "objective_id": "diagnose",
+            "hypothesis_ids": [],
+            "capability_id": "test.run",
+            "provider_id": "offline",
+            "evidence_ids": [],
+            "expected_observation": "New fixture measurement",
+            "reason_summary": "Scripted baseline repeats the test",
+            "target_action_id": null,
+            "target_run_ref": null,
+            "query_purpose": null,
+            "missing_fields": [],
+            "read_request": null,
+            "search_query": null,
+            "analysis_request": null,
+            "plan_delta": null,
+            "hypothesis_delta": null
+          },
+          "parameters": {
+            "case": "demo"
+          }
+        },
+        "cost": {
+          "simulated_runs": 1,
+          "device_minutes": 2.0,
+          "tool_reads": 0
+        }
+      }
+    ],
+    "initial_node": "start",
+    "nodes": [
+      {
+        "node_id": "start",
+        "observation": {
+          "observation_id": "observation-0",
+          "evidence_ids": [],
+          "findings": {}
+        },
+        "transitions": [
+          {
+            "operation_key": "200bba3cb910a0d62abadaeb24280adb27972974ddc7a7526185525f6a6dff09",
+            "status": "unavailable",
+            "next_node": null
+          }
+        ],
+        "supported_reports": {
+          "unresolved": []
+        },
+        "acceptable_missing_fields": [],
+        "unnecessary_experiment": false
+      }
+    ]
+  }
+]

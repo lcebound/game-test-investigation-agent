@@ -1,0 +1,86 @@
+{
+  "$id": "contract://v2/SandboxEnvironment",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "credential_policy": {
+      "const": "none",
+      "default": "none",
+      "title": "Credential Policy",
+      "type": "string"
+    },
+    "dependency_lock_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dependency Lock Hash",
+      "type": "string"
+    },
+    "image_digest": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Image Digest"
+    },
+    "isolation_kind": {
+      "enum": [
+        "microvm",
+        "gvisor",
+        "kata",
+        "wasm",
+        "container",
+        "windows_mxc",
+        "windows_psec"
+      ],
+      "title": "Isolation Kind",
+      "type": "string"
+    },
+    "network_access": {
+      "default": "disabled",
+      "enum": [
+        "disabled",
+        "approved"
+      ],
+      "title": "Network Access",
+      "type": "string"
+    },
+    "readonly_inputs": {
+      "const": true,
+      "default": true,
+      "title": "Readonly Inputs",
+      "type": "boolean"
+    },
+    "runner_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._:-]+$",
+      "title": "Runner Id",
+      "type": "string"
+    },
+    "runtime_digest": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Runtime Digest"
+    }
+  },
+  "required": [
+    "runner_id",
+    "isolation_kind",
+    "dependency_lock_hash"
+  ],
+  "title": "SandboxEnvironment",
+  "type": "object"
+}

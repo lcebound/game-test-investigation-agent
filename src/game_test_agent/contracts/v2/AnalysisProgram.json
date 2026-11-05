@@ -1,0 +1,55 @@
+{
+  "$id": "contract://v2/AnalysisProgram",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "code_artifact_ref": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Code Artifact Ref",
+      "type": "string"
+    },
+    "code_evidence_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code Evidence Id",
+      "type": "string"
+    },
+    "code_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Code Sha256",
+      "type": "string"
+    },
+    "entrypoint": {
+      "maxLength": 256,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Entrypoint",
+      "type": "string"
+    },
+    "language": {
+      "enum": [
+        "python",
+        "shell",
+        "powershell",
+        "wasm"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    }
+  },
+  "required": [
+    "language",
+    "code_evidence_id",
+    "code_artifact_ref",
+    "code_sha256",
+    "entrypoint"
+  ],
+  "title": "AnalysisProgram",
+  "type": "object"
+}

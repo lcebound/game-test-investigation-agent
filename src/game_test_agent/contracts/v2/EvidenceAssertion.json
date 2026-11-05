@@ -1,0 +1,74 @@
+{
+  "$id": "contract://v2/EvidenceAssertion",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A checkable statement about an exact JSON field, never a causal verdict.",
+  "properties": {
+    "evidence_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "expected": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Expected"
+    },
+    "operation": {
+      "default": "value",
+      "enum": [
+        "value",
+        "count",
+        "min",
+        "max",
+        "mean",
+        "p50",
+        "p95",
+        "p99"
+      ],
+      "title": "Operation",
+      "type": "string"
+    },
+    "operator": {
+      "default": "eq",
+      "enum": [
+        "eq",
+        "ne",
+        "lt",
+        "le",
+        "gt",
+        "ge"
+      ],
+      "title": "Operator",
+      "type": "string"
+    },
+    "pointer": {
+      "maxLength": 500,
+      "title": "Pointer",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "pointer",
+    "expected"
+  ],
+  "title": "EvidenceAssertion",
+  "type": "object"
+}

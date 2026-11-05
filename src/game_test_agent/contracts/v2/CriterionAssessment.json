@@ -1,0 +1,106 @@
+{
+  "$id": "contract://v2/CriterionAssessment",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "comparability_checks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Comparability Checks",
+      "type": "array"
+    },
+    "contradicting_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Contradicting Fact Ids",
+      "type": "array"
+    },
+    "criterion_id": {
+      "title": "Criterion Id",
+      "type": "string"
+    },
+    "evaluated_state_revision": {
+      "minimum": 1,
+      "title": "Evaluated State Revision",
+      "type": "integer"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "missing_requirements": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Requirements",
+      "type": "array"
+    },
+    "observed_values": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Observed Values",
+      "type": "array"
+    },
+    "rule_version": {
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "enum": [
+        "real_target",
+        "simulation",
+        "historical_reference"
+      ],
+      "title": "Scope",
+      "type": "string"
+    },
+    "supporting_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Supporting Fact Ids",
+      "type": "array"
+    },
+    "verdict": {
+      "enum": [
+        "passed",
+        "failed",
+        "insufficient",
+        "not_applicable"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "criterion_id",
+    "rule_version",
+    "investigation_id",
+    "evaluated_state_revision",
+    "verdict",
+    "scope"
+  ],
+  "title": "CriterionAssessment",
+  "type": "object"
+}

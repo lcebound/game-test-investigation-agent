@@ -1,0 +1,70 @@
+{
+  "$id": "contract://v2/DecisionOutcomeRecord",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Append-only observation of what followed an immutable decision.",
+  "properties": {
+    "chosen_action_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Chosen Action Id"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "decision_id": {
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "observed_outcome_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Observed Outcome Refs",
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "termination_basis": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Termination Basis"
+    }
+  },
+  "required": [
+    "decision_id",
+    "investigation_id",
+    "revision"
+  ],
+  "title": "DecisionOutcomeRecord",
+  "type": "object"
+}

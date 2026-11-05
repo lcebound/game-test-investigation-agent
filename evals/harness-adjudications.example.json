@@ -1,0 +1,10 @@
+{
+  "recovery-counterevidence/compact": {
+    "fixture_sha256": "REPLACE_WITH_FIXTURE_SHA256",
+    "report_sha256": "REPLACE_WITH_REPORT_SHA256",
+    "reviewer": "REPLACE_WITH_REVIEWER_ID",
+    "question_coverage": 0.5,
+    "unsupported_causal_claims": 0,
+    "notes": "Score against the fixed question and original evidence, not keyword presence. This is an example, not a measured result."
+  }
+}

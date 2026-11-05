@@ -1,0 +1,51 @@
+{
+  "$id": "contract://v2/SandboxResourceLimits",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cpu_seconds": {
+      "default": 30,
+      "maximum": 3600,
+      "minimum": 1,
+      "title": "Cpu Seconds",
+      "type": "integer"
+    },
+    "disk_mb": {
+      "default": 256,
+      "maximum": 10240,
+      "minimum": 1,
+      "title": "Disk Mb",
+      "type": "integer"
+    },
+    "memory_mb": {
+      "default": 512,
+      "maximum": 32768,
+      "minimum": 64,
+      "title": "Memory Mb",
+      "type": "integer"
+    },
+    "output_bytes": {
+      "default": 16777216,
+      "maximum": 1073741824,
+      "minimum": 1,
+      "title": "Output Bytes",
+      "type": "integer"
+    },
+    "process_count": {
+      "default": 8,
+      "maximum": 256,
+      "minimum": 1,
+      "title": "Process Count",
+      "type": "integer"
+    },
+    "wall_seconds": {
+      "default": 60,
+      "maximum": 7200,
+      "minimum": 1,
+      "title": "Wall Seconds",
+      "type": "integer"
+    }
+  },
+  "title": "SandboxResourceLimits",
+  "type": "object"
+}

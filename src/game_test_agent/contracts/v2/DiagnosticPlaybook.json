@@ -1,0 +1,157 @@
+{
+  "$defs": {
+    "PlaybookExperimentTemplate": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_eligible": {
+          "default": false,
+          "title": "Acceptance Eligible",
+          "type": "boolean"
+        },
+        "capability_operation": {
+          "enum": [
+            "query_run",
+            "retrieve_evidence",
+            "experiment",
+            "analyze"
+          ],
+          "title": "Capability Operation",
+          "type": "string"
+        },
+        "changed_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed Variables",
+          "type": "array"
+        },
+        "controls": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Controls",
+          "type": "array"
+        },
+        "estimated_cost_class": {
+          "default": "low",
+          "enum": [
+            "free",
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Estimated Cost Class",
+          "type": "string"
+        },
+        "outcome_interpretation": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Outcome Interpretation",
+          "type": "object"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "required_evidence_types": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Evidence Types",
+          "type": "array"
+        },
+        "stop_conditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Stop Conditions",
+          "type": "array"
+        },
+        "template_id": {
+          "title": "Template Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "template_id",
+        "question",
+        "capability_operation"
+      ],
+      "title": "PlaybookExperimentTemplate",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/DiagnosticPlaybook",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "anomaly_kind": {
+      "title": "Anomaly Kind",
+      "type": "string"
+    },
+    "applicable_when": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Applicable When",
+      "type": "array"
+    },
+    "experiment_templates": {
+      "items": {
+        "$ref": "#/$defs/PlaybookExperimentTemplate"
+      },
+      "title": "Experiment Templates",
+      "type": "array"
+    },
+    "forbidden_conclusions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Forbidden Conclusions",
+      "type": "array"
+    },
+    "initial_checks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Initial Checks",
+      "type": "array"
+    },
+    "playbook_id": {
+      "title": "Playbook Id",
+      "type": "string"
+    },
+    "required_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Fields",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "valuable_investigations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Valuable Investigations",
+      "type": "array"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "playbook_id",
+    "version",
+    "anomaly_kind"
+  ],
+  "title": "DiagnosticPlaybook",
+  "type": "object"
+}

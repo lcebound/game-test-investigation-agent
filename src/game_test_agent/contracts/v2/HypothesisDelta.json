@@ -1,0 +1,205 @@
+{
+  "$defs": {
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "contradicting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting Evidence Ids",
+          "type": "array"
+        },
+        "falsifiable_prediction": {
+          "title": "Falsifiable Prediction",
+          "type": "string"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "missing_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Evidence",
+          "type": "array"
+        },
+        "next_experiment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Experiment"
+        },
+        "observable_predictions": {
+          "items": {
+            "$ref": "#/$defs/ObservablePrediction"
+          },
+          "title": "Observable Predictions",
+          "type": "array"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/HypothesisStatus",
+          "default": "proposed"
+        },
+        "supporting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "investigation_id",
+        "revision",
+        "statement",
+        "scope",
+        "falsifiable_prediction"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "HypothesisStatus": {
+      "enum": [
+        "proposed",
+        "supported",
+        "refuted",
+        "confirmed",
+        "unresolved"
+      ],
+      "title": "HypothesisStatus",
+      "type": "string"
+    },
+    "ObservablePrediction": {
+      "additionalProperties": false,
+      "description": "A checkable expected observation, not a self-reported probability.",
+      "properties": {
+        "absolute_tolerance": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Absolute Tolerance",
+          "type": "number"
+        },
+        "capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Id"
+        },
+        "comparator": {
+          "enum": [
+            "eq",
+            "gt",
+            "lt",
+            "contains"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "minimum_samples": {
+          "default": 3,
+          "minimum": 3,
+          "title": "Minimum Samples",
+          "type": "integer"
+        },
+        "observation_key": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Observation Key",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "observation_key",
+        "comparator",
+        "value"
+      ],
+      "title": "ObservablePrediction",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/HypothesisDelta",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "hypotheses": {
+      "items": {
+        "$ref": "#/$defs/Hypothesis"
+      },
+      "minItems": 1,
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "reason": {
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "hypotheses",
+    "reason"
+  ],
+  "title": "HypothesisDelta",
+  "type": "object"
+}

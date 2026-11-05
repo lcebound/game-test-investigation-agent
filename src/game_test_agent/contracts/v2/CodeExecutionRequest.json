@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "CodeDirectoryPermission": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "enum": [
+            "read",
+            "write"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "access"
+      ],
+      "title": "CodeDirectoryPermission",
+      "type": "object"
+    },
+    "CodeExecutionPermissions": {
+      "additionalProperties": false,
+      "description": "A proposal only. The model cannot approve or activate these permissions.",
+      "properties": {
+        "directories": {
+          "items": {
+            "$ref": "#/$defs/CodeDirectoryPermission"
+          },
+          "maxItems": 8,
+          "title": "Directories",
+          "type": "array"
+        },
+        "network": {
+          "default": false,
+          "title": "Network",
+          "type": "boolean"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "CodeExecutionPermissions",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CodeExecutionRequest",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The model chooses code and can propose, but never approve, extra access.",
+  "properties": {
+    "code": {
+      "maxLength": 32768,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "input_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Input Evidence Ids",
+      "type": "array"
+    },
+    "language": {
+      "enum": [
+        "python",
+        "shell",
+        "powershell"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "permissions": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CodeExecutionPermissions"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "purpose": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Purpose",
+      "type": "string"
+    },
+    "repair_of_job_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Repair Of Job Id"
+    }
+  },
+  "required": [
+    "language",
+    "code",
+    "purpose",
+    "input_evidence_ids"
+  ],
+  "title": "CodeExecutionRequest",
+  "type": "object"
+}

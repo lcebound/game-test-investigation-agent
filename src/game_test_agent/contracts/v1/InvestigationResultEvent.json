@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "InvestigationResultData": {
+      "additionalProperties": false,
+      "properties": {
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "report_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Report Hash",
+          "type": "string"
+        },
+        "report_ref": {
+          "title": "Report Ref",
+          "type": "string"
+        },
+        "resolution": {
+          "$ref": "#/$defs/Resolution"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "root_event_id": {
+          "title": "Root Event Id",
+          "type": "string"
+        },
+        "run_refs": {
+          "items": {
+            "$ref": "#/$defs/RunRef"
+          },
+          "title": "Run Refs",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "canceled",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "investigation_id",
+        "revision",
+        "status",
+        "resolution",
+        "root_event_id",
+        "summary",
+        "report_ref",
+        "report_hash"
+      ],
+      "title": "InvestigationResultData",
+      "type": "object"
+    },
+    "Resolution": {
+      "enum": [
+        "diagnosed",
+        "inconclusive",
+        "not_reproduced",
+        "goal_met",
+        "canceled",
+        "system_error"
+      ],
+      "title": "Resolution",
+      "type": "string"
+    },
+    "RunRef": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_id",
+        "project_id",
+        "run_id"
+      ],
+      "title": "RunRef",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v1/InvestigationResultEvent",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "causation_id": {
+      "title": "Causation Id",
+      "type": "string"
+    },
+    "correlation_id": {
+      "title": "Correlation Id",
+      "type": "string"
+    },
+    "data": {
+      "$ref": "#/$defs/InvestigationResultData"
+    },
+    "event_id": {
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "game_test.investigation.updated",
+        "game_test.investigation.completed"
+      ],
+      "title": "Event Type",
+      "type": "string"
+    },
+    "investigation_depth": {
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Investigation Depth",
+      "type": "integer"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "origin": {
+      "const": "agent",
+      "default": "agent",
+      "title": "Origin",
+      "type": "string"
+    },
+    "project_id": {
+      "title": "Project Id",
+      "type": "string"
+    },
+    "published_at": {
+      "format": "date-time",
+      "title": "Published At",
+      "type": "string"
+    },
+    "root_event_id": {
+      "title": "Root Event Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "title": "Source",
+      "type": "string"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "event_type",
+    "source",
+    "tenant_id",
+    "project_id",
+    "occurred_at",
+    "published_at",
+    "correlation_id",
+    "causation_id",
+    "root_event_id",
+    "investigation_id",
+    "investigation_depth",
+    "data"
+  ],
+  "title": "InvestigationResultEvent",
+  "type": "object"
+}

@@ -1,0 +1,39 @@
+{
+  "$id": "contract://v2/CandidateAssessment",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "discriminated_pairs": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Discriminated Pairs",
+      "type": "integer"
+    },
+    "executable": {
+      "title": "Executable",
+      "type": "boolean"
+    },
+    "fills_evidence_gap": {
+      "default": false,
+      "title": "Fills Evidence Gap",
+      "type": "boolean"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "executable"
+  ],
+  "title": "CandidateAssessment",
+  "type": "object"
+}

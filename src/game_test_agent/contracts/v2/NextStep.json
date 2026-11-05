@@ -1,0 +1,1014 @@
+{
+  "$defs": {
+    "AnalysisRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "input_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Input Evidence Ids",
+          "type": "array"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        },
+        "recipe_id": {
+          "enum": [
+            "csv_summary_v1",
+            "log_error_count_v1"
+          ],
+          "title": "Recipe Id",
+          "type": "string"
+        },
+        "recipe_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Recipe Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "recipe_id",
+        "input_evidence_ids"
+      ],
+      "title": "AnalysisRequest",
+      "type": "object"
+    },
+    "CodeDirectoryPermission": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "enum": [
+            "read",
+            "write"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "access"
+      ],
+      "title": "CodeDirectoryPermission",
+      "type": "object"
+    },
+    "CodeExecutionPermissions": {
+      "additionalProperties": false,
+      "description": "A proposal only. The model cannot approve or activate these permissions.",
+      "properties": {
+        "directories": {
+          "items": {
+            "$ref": "#/$defs/CodeDirectoryPermission"
+          },
+          "maxItems": 8,
+          "title": "Directories",
+          "type": "array"
+        },
+        "network": {
+          "default": false,
+          "title": "Network",
+          "type": "boolean"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "CodeExecutionPermissions",
+      "type": "object"
+    },
+    "CodeExecutionRequest": {
+      "additionalProperties": false,
+      "description": "The model chooses code and can propose, but never approve, extra access.",
+      "properties": {
+        "code": {
+          "maxLength": 32768,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "input_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Input Evidence Ids",
+          "type": "array"
+        },
+        "language": {
+          "enum": [
+            "python",
+            "shell",
+            "powershell"
+          ],
+          "title": "Language",
+          "type": "string"
+        },
+        "permissions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CodeExecutionPermissions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "purpose": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "repair_of_job_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repair Of Job Id"
+        }
+      },
+      "required": [
+        "language",
+        "code",
+        "purpose",
+        "input_evidence_ids"
+      ],
+      "title": "CodeExecutionRequest",
+      "type": "object"
+    },
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "contradicting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting Evidence Ids",
+          "type": "array"
+        },
+        "falsifiable_prediction": {
+          "title": "Falsifiable Prediction",
+          "type": "string"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "investigation_id": {
+          "title": "Investigation Id",
+          "type": "string"
+        },
+        "missing_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Evidence",
+          "type": "array"
+        },
+        "next_experiment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Experiment"
+        },
+        "observable_predictions": {
+          "items": {
+            "$ref": "#/$defs/ObservablePrediction"
+          },
+          "title": "Observable Predictions",
+          "type": "array"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/HypothesisStatus",
+          "default": "proposed"
+        },
+        "supporting_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "investigation_id",
+        "revision",
+        "statement",
+        "scope",
+        "falsifiable_prediction"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "HypothesisDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "hypotheses": {
+          "items": {
+            "$ref": "#/$defs/Hypothesis"
+          },
+          "minItems": 1,
+          "title": "Hypotheses",
+          "type": "array"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "default": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypotheses",
+        "reason"
+      ],
+      "title": "HypothesisDelta",
+      "type": "object"
+    },
+    "HypothesisStatus": {
+      "enum": [
+        "proposed",
+        "supported",
+        "refuted",
+        "confirmed",
+        "unresolved"
+      ],
+      "title": "HypothesisStatus",
+      "type": "string"
+    },
+    "ObservablePrediction": {
+      "additionalProperties": false,
+      "description": "A checkable expected observation, not a self-reported probability.",
+      "properties": {
+        "absolute_tolerance": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Absolute Tolerance",
+          "type": "number"
+        },
+        "capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Id"
+        },
+        "comparator": {
+          "enum": [
+            "eq",
+            "gt",
+            "lt",
+            "contains"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "minimum_samples": {
+          "default": 3,
+          "minimum": 3,
+          "title": "Minimum Samples",
+          "type": "integer"
+        },
+        "observation_key": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Observation Key",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "observation_key",
+        "comparator",
+        "value"
+      ],
+      "title": "ObservablePrediction",
+      "type": "object"
+    },
+    "PlanDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "added_steps": {
+          "items": {
+            "$ref": "#/$defs/PlanStep"
+          },
+          "title": "Added Steps",
+          "type": "array"
+        },
+        "base_revision": {
+          "minimum": 0,
+          "title": "Base Revision",
+          "type": "integer"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "replacements": {
+          "items": {
+            "$ref": "#/$defs/PlanStepReplacement"
+          },
+          "title": "Replacements",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "default": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status_updates": {
+          "items": {
+            "$ref": "#/$defs/PlanStepStatusUpdate"
+          },
+          "title": "Status Updates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "base_revision",
+        "reason"
+      ],
+      "title": "PlanDelta",
+      "type": "object"
+    },
+    "PlanFailureHandling": {
+      "additionalProperties": false,
+      "properties": {
+        "fallback_step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fallback Step Id"
+        },
+        "max_attempts": {
+          "default": 1,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "strategy": {
+          "default": "replan",
+          "enum": [
+            "stop",
+            "skip",
+            "retry",
+            "replan",
+            "request_input"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "PlanFailureHandling",
+      "type": "object"
+    },
+    "PlanInputBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_type": {
+          "minLength": 1,
+          "title": "Expected Type",
+          "type": "string"
+        },
+        "input_name": {
+          "minLength": 1,
+          "title": "Input Name",
+          "type": "string"
+        },
+        "source_output": {
+          "minLength": 1,
+          "title": "Source Output",
+          "type": "string"
+        },
+        "source_step_id": {
+          "minLength": 1,
+          "title": "Source Step Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_name",
+        "source_step_id",
+        "source_output",
+        "expected_type"
+      ],
+      "title": "PlanInputBinding",
+      "type": "object"
+    },
+    "PlanOutputContract": {
+      "additionalProperties": false,
+      "properties": {
+        "output_name": {
+          "minLength": 1,
+          "title": "Output Name",
+          "type": "string"
+        },
+        "output_type": {
+          "minLength": 1,
+          "title": "Output Type",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "output_name",
+        "output_type"
+      ],
+      "title": "PlanOutputContract",
+      "type": "object"
+    },
+    "PlanResourceRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Amount",
+          "type": "number"
+        },
+        "exclusive": {
+          "default": true,
+          "title": "Exclusive",
+          "type": "boolean"
+        },
+        "resource_domain": {
+          "minLength": 1,
+          "title": "Resource Domain",
+          "type": "string"
+        },
+        "unit": {
+          "default": "slots",
+          "enum": [
+            "slots",
+            "device_minutes",
+            "bytes"
+          ],
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resource_domain"
+      ],
+      "title": "PlanResourceRequirement",
+      "type": "object"
+    },
+    "PlanStep": {
+      "additionalProperties": false,
+      "properties": {
+        "action_type": {
+          "enum": [
+            "query",
+            "experiment",
+            "analyze",
+            "evaluate",
+            "report",
+            "request_input"
+          ],
+          "title": "Action Type",
+          "type": "string"
+        },
+        "capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Id"
+        },
+        "capability_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Version"
+        },
+        "completion_conditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Completion Conditions",
+          "type": "array"
+        },
+        "cost_limit_device_minutes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Limit Device Minutes"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "estimated_device_minutes": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Estimated Device Minutes",
+          "type": "number"
+        },
+        "expected_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "failure_handling": {
+          "$ref": "#/$defs/PlanFailureHandling"
+        },
+        "input_bindings": {
+          "items": {
+            "$ref": "#/$defs/PlanInputBinding"
+          },
+          "title": "Input Bindings",
+          "type": "array"
+        },
+        "objective_id": {
+          "title": "Objective Id",
+          "type": "string"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/PlanOutputContract"
+          },
+          "title": "Outputs",
+          "type": "array"
+        },
+        "preconditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Preconditions",
+          "type": "array"
+        },
+        "provider_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Id"
+        },
+        "required_inputs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Inputs",
+          "type": "array"
+        },
+        "resource_requirements": {
+          "items": {
+            "$ref": "#/$defs/PlanResourceRequirement"
+          },
+          "title": "Resource Requirements",
+          "type": "array"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "ready",
+            "running",
+            "completed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "objective_id",
+        "action_type"
+      ],
+      "title": "PlanStep",
+      "type": "object"
+    },
+    "PlanStepReplacement": {
+      "additionalProperties": false,
+      "properties": {
+        "replacement": {
+          "$ref": "#/$defs/PlanStep"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "replacement"
+      ],
+      "title": "PlanStepReplacement",
+      "type": "object"
+    },
+    "PlanStepStatusUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_status": {
+          "enum": [
+            "pending",
+            "ready",
+            "running"
+          ],
+          "title": "Expected Status",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "target_status": {
+          "enum": [
+            "ready",
+            "running",
+            "completed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Target Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "expected_status",
+        "target_status"
+      ],
+      "title": "PlanStepStatusUpdate",
+      "type": "object"
+    },
+    "ReadRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_offset": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Byte Offset",
+          "type": "integer"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "max_bytes": {
+          "default": 4096,
+          "maximum": 4096,
+          "minimum": 1,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "purpose": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "purpose"
+      ],
+      "title": "ReadRequest",
+      "type": "object"
+    },
+    "RunRef": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_id",
+        "project_id",
+        "run_id"
+      ],
+      "title": "RunRef",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/NextStep",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "analysis_request": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AnalysisRequest"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "capability_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Capability Id"
+    },
+    "code_request": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CodeExecutionRequest"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "expected_observation": {
+      "title": "Expected Observation",
+      "type": "string"
+    },
+    "hypothesis_delta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HypothesisDelta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "hypothesis_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Hypothesis Ids",
+      "type": "array"
+    },
+    "kind": {
+      "enum": [
+        "query",
+        "query_run",
+        "retrieve_evidence",
+        "search_evidence",
+        "experiment",
+        "analyze",
+        "execute_code",
+        "report",
+        "request_input"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "missing_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Fields",
+      "type": "array"
+    },
+    "objective_id": {
+      "title": "Objective Id",
+      "type": "string"
+    },
+    "plan_delta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlanDelta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "provider_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Provider Id"
+    },
+    "query_purpose": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Query Purpose"
+    },
+    "read_request": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReadRequest"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reason_summary": {
+      "title": "Reason Summary",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "search_query": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Search Query"
+    },
+    "target_action_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Action Id"
+    },
+    "target_run_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RunRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "kind",
+    "objective_id",
+    "expected_observation",
+    "reason_summary"
+  ],
+  "title": "NextStep",
+  "type": "object"
+}

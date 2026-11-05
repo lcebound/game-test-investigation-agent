@@ -1,0 +1,327 @@
+{
+  "$defs": {
+    "CaseApplicability": {
+      "additionalProperties": false,
+      "properties": {
+        "build_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Build Ids",
+          "type": "array"
+        },
+        "build_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "engine_family": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Family"
+        },
+        "engine_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "environment_fingerprints": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Environment Fingerprints",
+          "type": "array"
+        }
+      },
+      "title": "CaseApplicability",
+      "type": "object"
+    },
+    "CaseMemoryContent": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmed_outcome": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Confirmed Outcome",
+          "type": "string"
+        },
+        "effective_experiments": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Effective Experiments",
+          "type": "array"
+        },
+        "ineffective_experiments": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Ineffective Experiments",
+          "type": "array"
+        },
+        "investigation_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Investigation Path",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "symptoms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Symptoms",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Tags",
+          "type": "array"
+        },
+        "title": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "symptoms",
+        "confirmed_outcome"
+      ],
+      "title": "CaseMemoryContent",
+      "type": "object"
+    },
+    "CaseMemoryStatus": {
+      "enum": [
+        "candidate",
+        "reviewed",
+        "active",
+        "deprecated",
+        "retracted"
+      ],
+      "title": "CaseMemoryStatus",
+      "type": "string"
+    },
+    "VersionInterval": {
+      "additionalProperties": false,
+      "description": "Opaque, provider-neutral applicability interval.\n\nMatching uses a deterministic natural-token ordering. Providers should supply\nnormalized engine/build revisions; exact allow-lists remain available when an\nordering is not meaningful (for example source-control hashes).",
+      "properties": {
+        "max_exclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Exclusive"
+        },
+        "min_inclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Inclusive"
+        }
+      },
+      "title": "VersionInterval",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CaseMemoryRecord",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "$ref": "#/$defs/CaseApplicability"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "content": {
+      "$ref": "#/$defs/CaseMemoryContent"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "title": "Created By",
+      "type": "string"
+    },
+    "project_id": {
+      "title": "Project Id",
+      "type": "string"
+    },
+    "review_notes": {
+      "anyOf": [
+        {
+          "maxLength": 10000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Review Notes"
+    },
+    "reviewed_by": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewed By"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Evidence Ids",
+      "type": "array"
+    },
+    "source_investigation_id": {
+      "title": "Source Investigation Id",
+      "type": "string"
+    },
+    "source_report_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Report Hash",
+      "type": "string"
+    },
+    "source_report_revision": {
+      "minimum": 1,
+      "title": "Source Report Revision",
+      "type": "integer"
+    },
+    "state_changed_by": {
+      "title": "State Changed By",
+      "type": "string"
+    },
+    "state_reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "State Reason",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/CaseMemoryStatus"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "case_id",
+    "revision",
+    "tenant_id",
+    "project_id",
+    "status",
+    "confidence",
+    "content",
+    "applicability",
+    "source_investigation_id",
+    "source_report_revision",
+    "source_report_hash",
+    "created_by",
+    "state_reason",
+    "state_changed_by"
+  ],
+  "title": "CaseMemoryRecord",
+  "type": "object"
+}

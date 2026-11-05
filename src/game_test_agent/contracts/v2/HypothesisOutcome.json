@@ -1,0 +1,33 @@
+{
+  "$id": "contract://v2/HypothesisOutcome",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "hypothesis_id": {
+      "title": "Hypothesis Id",
+      "type": "string"
+    },
+    "observation_keys": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Observation Keys",
+      "type": "array"
+    },
+    "result": {
+      "enum": [
+        "supports",
+        "weakens",
+        "unknown"
+      ],
+      "title": "Result",
+      "type": "string"
+    }
+  },
+  "required": [
+    "hypothesis_id",
+    "result"
+  ],
+  "title": "HypothesisOutcome",
+  "type": "object"
+}

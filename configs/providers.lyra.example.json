@@ -1,0 +1,11 @@
+{
+  "mcp_providers": [
+    {
+      "provider_id": "platform-local",
+      "contract": "lyra_v1",
+      "url": "http://127.0.0.1:8010/mcp",
+      "project_ids": ["default"],
+      "allow_insecure_localhost": true
+    }
+  ]
+}

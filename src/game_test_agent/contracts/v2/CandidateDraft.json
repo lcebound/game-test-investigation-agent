@@ -1,0 +1,230 @@
+{
+  "$defs": {
+    "ObservablePrediction": {
+      "additionalProperties": false,
+      "description": "A checkable expected observation, not a self-reported probability.",
+      "properties": {
+        "absolute_tolerance": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Absolute Tolerance",
+          "type": "number"
+        },
+        "capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Id"
+        },
+        "comparator": {
+          "enum": [
+            "eq",
+            "gt",
+            "lt",
+            "contains"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "minimum_samples": {
+          "default": 3,
+          "minimum": 3,
+          "title": "Minimum Samples",
+          "type": "integer"
+        },
+        "observation_key": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Observation Key",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "observation_key",
+        "comparator",
+        "value"
+      ],
+      "title": "ObservablePrediction",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CandidateDraft",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Bounded model suggestion; executable fields are checked by the selector.",
+  "properties": {
+    "candidate_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "capability_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Capability Id"
+    },
+    "evidence_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Evidence Id"
+    },
+    "expected_observation": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Expected Observation",
+      "type": "string"
+    },
+    "hypothesis_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Hypothesis Ids",
+      "type": "array"
+    },
+    "kind": {
+      "enum": [
+        "experiment",
+        "retrieve_evidence",
+        "analyze",
+        "query_run",
+        "search_evidence"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    },
+    "predictions": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/ObservablePrediction"
+        },
+        "type": "array"
+      },
+      "title": "Predictions",
+      "type": "object"
+    },
+    "provider_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Provider Id"
+    },
+    "question": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "reason_summary": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Reason Summary",
+      "type": "string"
+    },
+    "recipe_id": {
+      "anyOf": [
+        {
+          "enum": [
+            "csv_summary_v1",
+            "log_error_count_v1"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recipe Id"
+    },
+    "search_query": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Search Query"
+    },
+    "target_action_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Action Id"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "question",
+    "kind",
+    "expected_observation",
+    "reason_summary"
+  ],
+  "title": "CandidateDraft",
+  "type": "object"
+}

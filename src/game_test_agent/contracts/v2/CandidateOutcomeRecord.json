@@ -1,0 +1,149 @@
+{
+  "$defs": {
+    "HypothesisOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "observation_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observation Keys",
+          "type": "array"
+        },
+        "result": {
+          "enum": [
+            "supports",
+            "weakens",
+            "unknown"
+          ],
+          "title": "Result",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "result"
+      ],
+      "title": "HypothesisOutcome",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/CandidateOutcomeRecord",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Action Id"
+    },
+    "candidate_id": {
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "compared_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Compared Evidence Ids",
+      "type": "array"
+    },
+    "comparison_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Comparison Key"
+    },
+    "evaluator_version": {
+      "title": "Evaluator Version",
+      "type": "string"
+    },
+    "evidence_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Evidence Id"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "observation_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Observation Ref"
+    },
+    "observed_values": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Observed Values",
+      "type": "object"
+    },
+    "outcomes": {
+      "items": {
+        "$ref": "#/$defs/HypothesisOutcome"
+      },
+      "title": "Outcomes",
+      "type": "array"
+    },
+    "plan_revision": {
+      "minimum": 1,
+      "title": "Plan Revision",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "plan_revision",
+    "candidate_id",
+    "outcomes",
+    "evaluator_version"
+  ],
+  "title": "CandidateOutcomeRecord",
+  "type": "object"
+}

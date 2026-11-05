@@ -1,0 +1,199 @@
+{
+  "$defs": {
+    "CaseApplicability": {
+      "additionalProperties": false,
+      "properties": {
+        "build_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Build Ids",
+          "type": "array"
+        },
+        "build_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "engine_family": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Family"
+        },
+        "engine_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "environment_fingerprints": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Environment Fingerprints",
+          "type": "array"
+        }
+      },
+      "title": "CaseApplicability",
+      "type": "object"
+    },
+    "VersionInterval": {
+      "additionalProperties": false,
+      "description": "Opaque, provider-neutral applicability interval.\n\nMatching uses a deterministic natural-token ordering. Providers should supply\nnormalized engine/build revisions; exact allow-lists remain available when an\nordering is not meaningful (for example source-control hashes).",
+      "properties": {
+        "max_exclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Exclusive"
+        },
+        "min_inclusive": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Inclusive"
+        }
+      },
+      "title": "VersionInterval",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v2/HistoricalCaseReference",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Read-only hint for planning; never a current-run fact or evidence record.",
+  "properties": {
+    "applicability": {
+      "$ref": "#/$defs/CaseApplicability"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "confirmed_outcome": {
+      "title": "Confirmed Outcome",
+      "type": "string"
+    },
+    "effective_experiments": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Effective Experiments",
+      "type": "array"
+    },
+    "ineffective_experiments": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Ineffective Experiments",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "historical_reference",
+      "default": "historical_reference",
+      "title": "Scope",
+      "type": "string"
+    },
+    "score": {
+      "minimum": 0,
+      "title": "Score",
+      "type": "integer"
+    },
+    "source_investigation_id": {
+      "title": "Source Investigation Id",
+      "type": "string"
+    },
+    "symptoms": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Symptoms",
+      "type": "array"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "warning": {
+      "const": "historical_case_is_not_current_evidence",
+      "default": "historical_case_is_not_current_evidence",
+      "title": "Warning",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "revision",
+    "title",
+    "symptoms",
+    "confirmed_outcome",
+    "applicability",
+    "confidence",
+    "source_investigation_id",
+    "score"
+  ],
+  "title": "HistoricalCaseReference",
+  "type": "object"
+}

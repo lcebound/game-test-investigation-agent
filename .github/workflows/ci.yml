@@ -1,0 +1,107 @@
+name: Offline checks and package verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: offline-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12', '3.13']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      PYTHONUTF8: '1'
+      GTA_ENABLE_MODEL: 'false'
+      GTA_MCP_PROVIDERS_JSON: '[]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pinned package manager
+        run: python -m pip install uv==0.13.6
+      - name: Install locked dependencies
+        run: uv sync --locked --all-extras --no-editable
+      - name: Lint
+        run: uv run --frozen --all-extras ruff check src tests scripts/check_contracts.py scripts/package_smoke.py scripts/run_dependency_checks.py scripts/validate_harness_services.py scripts/validate_mcp_operations.py
+      - name: Validate versioned contracts
+        run: uv run --frozen --all-extras python scripts/check_contracts.py
+      - name: Offline regression
+        run: uv run --frozen --all-extras pytest -q --junitxml=test-results.xml
+      - name: Build wheel and source distribution
+        run: uv build --no-build-isolation
+      - name: Check packaged resources and import
+        run: uv run --frozen --all-extras python scripts/package_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checks-${{ matrix.os }}-py${{ matrix.python }}
+          path: |
+            test-results.xml
+            dist/*.whl
+            dist/*.tar.gz
+  dependencies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONUTF8: '1'
+      GTA_ENABLE_MODEL: 'false'
+      GTA_MCP_PROVIDERS_JSON: '[]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.13.6
+          uv sync --locked --all-extras --no-editable
+      - name: Exercise readonly MCP operation transport
+        run: uv run --frozen --all-extras python scripts/validate_mcp_operations.py --output data/local/harness-mcp/result.json
+      - name: Exercise MySQL, S3 and Temporal
+        run: uv run --frozen --all-extras python scripts/run_dependency_checks.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-checks
+          path: |
+            data/local/harness-mcp/result.json
+            data/local/gta-deps-*/results.xml
+            data/local/gta-deps-*/result.json
+            data/local/gta-deps-*/services.log
+            data/local/gta-deps-*/temporal.log
+            data/local/gta-deps-*/pytest.log
+
+  harness-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+      GTA_ENABLE_MODEL: 'false'
+      GTA_MCP_PROVIDERS_JSON: '[]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.13.6
+          uv sync --locked --all-extras --no-editable
+      - name: Install pinned headless browser
+        run: uv run --frozen --all-extras --with playwright==1.64.1 python -m playwright install --with-deps chromium --only-shell
+      - name: Exercise harness workbench
+        run: uv run --frozen --all-extras --with playwright==1.64.1 python scripts/validate_harness_browser.py --output data/local/harness-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harness-browser
+          path: data/local/harness-browser/

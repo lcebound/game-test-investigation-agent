@@ -1,0 +1,192 @@
+{
+  "$defs": {
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_device_minutes": {
+          "default": 20,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Device Minutes",
+          "type": "number"
+        },
+        "max_real_runs": {
+          "default": 3,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Max Real Runs",
+          "type": "integer"
+        },
+        "max_rounds": {
+          "default": 4,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Rounds",
+          "type": "integer"
+        },
+        "max_tool_reads": {
+          "default": 40,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Max Tool Reads",
+          "type": "integer"
+        },
+        "max_wall_seconds": {
+          "default": 1800,
+          "maximum": 604800,
+          "minimum": 1,
+          "title": "Max Wall Seconds",
+          "type": "integer"
+        }
+      },
+      "title": "Budget",
+      "type": "object"
+    },
+    "BuildRef": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "BuildRef",
+      "type": "object"
+    },
+    "TestObjective": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Acceptance Criteria",
+          "type": "array"
+        },
+        "description": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "objective_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Objective Id",
+          "type": "string"
+        },
+        "priority": {
+          "default": "normal",
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "critical"
+          ],
+          "title": "Priority",
+          "type": "string"
+        }
+      },
+      "required": [
+        "objective_id",
+        "description"
+      ],
+      "title": "TestObjective",
+      "type": "object"
+    }
+  },
+  "$id": "contract://v1/InvestigationRequest",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "$ref": "#/$defs/Budget"
+    },
+    "build_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BuildRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "constraints": {
+      "additionalProperties": true,
+      "title": "Constraints",
+      "type": "object"
+    },
+    "objective": {
+      "$ref": "#/$defs/TestObjective"
+    },
+    "project_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Project Id",
+      "type": "string"
+    },
+    "root_event_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Root Event Id"
+    },
+    "source": {
+      "default": "user",
+      "enum": [
+        "user",
+        "event"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "tenant_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "project_id",
+    "objective"
+  ],
+  "title": "InvestigationRequest",
+  "type": "object"
+}

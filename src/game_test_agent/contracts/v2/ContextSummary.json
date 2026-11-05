@@ -1,0 +1,125 @@
+{
+  "$id": "contract://v2/ContextSummary",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "generator_kind": {
+      "default": "deterministic",
+      "enum": [
+        "deterministic",
+        "model"
+      ],
+      "title": "Generator Kind",
+      "type": "string"
+    },
+    "generator_version": {
+      "title": "Generator Version",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_action_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Action Ids",
+      "type": "array"
+    },
+    "source_analysis_job_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Analysis Job Ids",
+      "type": "array"
+    },
+    "source_derived_fact_candidate_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Derived Fact Candidate Ids",
+      "type": "array"
+    },
+    "source_event_cursor_end": {
+      "minimum": 0,
+      "title": "Source Event Cursor End",
+      "type": "integer"
+    },
+    "source_event_cursor_start": {
+      "minimum": 0,
+      "title": "Source Event Cursor Start",
+      "type": "integer"
+    },
+    "source_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Evidence Ids",
+      "type": "array"
+    },
+    "source_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Fact Ids",
+      "type": "array"
+    },
+    "source_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Hash",
+      "type": "string"
+    },
+    "source_hypothesis_revisions": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Source Hypothesis Revisions",
+      "type": "object"
+    },
+    "source_state_revision": {
+      "minimum": 1,
+      "title": "Source State Revision",
+      "type": "integer"
+    },
+    "summary_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Summary Hash",
+      "type": "string"
+    },
+    "summary_id": {
+      "title": "Summary Id",
+      "type": "string"
+    },
+    "summary_text": {
+      "maxLength": 100000,
+      "minLength": 1,
+      "title": "Summary Text",
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary_id",
+    "investigation_id",
+    "source_state_revision",
+    "source_event_cursor_start",
+    "source_event_cursor_end",
+    "source_hash",
+    "generator_version",
+    "summary_text",
+    "summary_hash"
+  ],
+  "title": "ContextSummary",
+  "type": "object"
+}

@@ -1,0 +1,37 @@
+{
+  "$id": "contract://v2/ReadRequest",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "byte_offset": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Byte Offset",
+      "type": "integer"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "max_bytes": {
+      "default": 4096,
+      "maximum": 4096,
+      "minimum": 1,
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "purpose": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Purpose",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "purpose"
+  ],
+  "title": "ReadRequest",
+  "type": "object"
+}
