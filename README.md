@@ -37,7 +37,7 @@ Copy-Item configs/providers.native.example.json configs/providers.local.json
 
 ## 可选部署
 
-- 外部事件自动调查需配置事件来源及授权，见[统一协调入口](docs/unified-router-implementation-2026-11-05.md)。
+- Router–Worker 架构与外部事件调查配置见[架构说明](docs/architecture.md)。
 - Windows 原生代码分析默认关闭，启用前先按[沙盒说明](docs/sandbox-code-execution.md)验证运行时；核心服务不依赖 Windows 沙盒。
 - 长期服务或多进程部署可选 Temporal、MySQL、S3 和 RabbitMQ，见[运行部署说明](docs/operations.md)。生产模式必须配置对应的存储、认证和权限，不能直接将本地开发身份模式暴露到公网。
 
@@ -49,7 +49,5 @@ Copy-Item configs/providers.native.example.json configs/providers.local.json
 ```
 
 默认测试不调用真实模型或游戏平台；原生沙盒和真实依赖测试需单独启用。模型评测结果不等同于真实游戏根因定位准确率。
-
-[前端与验收记录](docs/supervisor-ui-implementation-2026-11-05.md) · [当前实现状态](docs/implementation-status.md)
 
 架构参考：[DeepSeek Super-agent 公开研究原型](https://github.com/deepseek-ai/dsh-superagent-prototype)。本项目使用现有 Python 运行时进行适配；第三方说明见 [third-party notices](docs/third-party-notices/)。

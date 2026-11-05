@@ -69,12 +69,14 @@ test-results/
 credentials.json
 service-account*.json
 
-# Historical live-run exports and personal notes (kept locally)
-docs/*live*.json
-docs/acceptance-*.json
-docs/model-smoke-review*.json
-docs/自用复习.md
-docs/*interview*.md
+# Publish only maintained documentation; keep development notes locally.
+/docs/*
+!/docs/architecture.md
+!/docs/operations.md
+!/docs/sandbox-code-execution.md
+!/docs/windows-sandbox-references.md
+!/docs/third-party-notices/
+!/docs/third-party-notices/**
 
 # Generated evaluation snapshots and results
 /evals/*.source.zip
